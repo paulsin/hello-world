@@ -56,7 +56,7 @@ app.post('/backend/person', function(req, res){
    
 	if(!req.body.name){
 		res.render('show_message', {
-			message: "Sorry, you provided worng info", type: "error"});
+			message: "Sorry, you provided worng info hello", type: "error"});
 	} else {
 		var newPerson = new Person({
 			name: req.body.name
