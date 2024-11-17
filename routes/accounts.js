@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var mongoose = require('mongoose');
+
 const path = require('path');
 
 var app = express();
@@ -25,6 +26,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // for parsing multipart/form-data
 app.use(upload.array()); 
 app.use(express.static('public'));
+
 
 
 var personSchema = mongoose.Schema({
