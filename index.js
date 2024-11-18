@@ -1,10 +1,10 @@
 var express = require('express');
 var app = express();
-var cors = require('cors');
+//var cors = require('cors');
 
 var accounts = require('./routes/accounts.js');
 
-app.use(cors());
+//app.use(cors());
 
 app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");

@@ -71,9 +71,11 @@ router.post('/person', function(req, res){
         //newTest2.save();
                
         newPerson.save().then(()=>{
-            res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+            //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+            res.send(200);
         }).catch((err)=>{
-            res.render('show_message.pug', {message: "Database error", type: "error"});
+            //res.render('show_message.pug', {message: "Database error", type: "error"});
+            res.send(401);
         });
 
     }
