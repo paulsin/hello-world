@@ -3,6 +3,8 @@ var app = express();
 //var cors = require('cors');
 
 var accounts = require('./routes/accounts.js');
+var location = require('./routes/location.js');
+var property = require('./routes/property.js');
 
 //app.use(cors());
 
@@ -16,6 +18,8 @@ app.use(function(req, res, next) {
 });
 
 app.use('/accounts', accounts);
+app.use('/location', location);
+app.use('/property', property);
 
 app.listen(3000);
 
