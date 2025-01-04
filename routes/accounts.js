@@ -11,8 +11,8 @@ var session = require('express-session');
 var app = express();
 var upload = multer();
 
-//mongoose.connect('mongodb://localhost/my_db');
-mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
+mongoose.connect('mongodb://localhost/my_db');
+//mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
 
 const databasename = "my_db";
 
