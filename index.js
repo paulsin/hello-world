@@ -17,9 +17,9 @@ app.use(function(req, res, next) {
         next();
 });
 
-app.use('/accounts', accounts);
-app.use('/location', location);
-app.use('/property', property);
+app.use('/backend/accounts', accounts);
+app.use('/backend/location', location);
+app.use('/backend/property', property);
 
 app.listen(3000);
 

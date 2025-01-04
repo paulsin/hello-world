@@ -18,9 +18,6 @@ const cors = require('cors');
 const url = 'http://localhost:3001';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
 
-app.set('view engine', 'pug');
-app.set('views', './views');
-//app.set('views', path.join(__dirname, 'views'));
 
 var router = express.Router();
 
