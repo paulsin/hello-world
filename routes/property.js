@@ -1,12 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var multer = require('multer');
 var mongoose = require('mongoose');
 
-const path = require('path');
-
 var app = express();
-var upload = multer();
 
 mongoose.connect('mongodb://localhost/my_db');
 //mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
@@ -18,10 +14,6 @@ const cors = require('cors');
 const url = 'http://localhost:3001';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
 
-app.set('view engine', 'pug');
-app.set('views', './views');
-//app.set('views', path.join(__dirname, 'views'));
-
 var router = express.Router();
 
 // for parsing application/json
@@ -30,10 +22,6 @@ router.use(bodyParser.json());
 // for parsing application/xwww-
 router.use(bodyParser.urlencoded({ extended: true })); 
 //form-urlencoded
-
-// for parsing multipart/form-data
-app.use(upload.array()); 
-app.use(express.static('public'));
 
 router.use(cors({
     origin: url, // Replace with your React app's origin

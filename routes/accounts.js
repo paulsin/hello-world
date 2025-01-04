@@ -1,20 +1,14 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var multer = require('multer');
 var mongoose = require('mongoose');
-
-const path = require('path');
 
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
 var app = express();
-var upload = multer();
 
 mongoose.connect('mongodb://localhost/my_db');
 //mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
-
-const databasename = "my_db";
 
 const cors = require('cors');
 
@@ -31,9 +25,6 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true })); 
 //form-urlencoded
 
-// for parsing multipart/form-data
-app.use(upload.array()); 
-app.use(express.static('public'));
 
 router.use(cors({
     origin: url, // Replace with your React app's origin
