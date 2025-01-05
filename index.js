@@ -6,8 +6,11 @@ var accounts = require('./routes/accounts.js');
 var location = require('./routes/location.js');
 var property = require('./routes/property.js');
 
+global.databaseURL = 'mongodb://localhost/my_db';
+
 //app.use(cors());
 
+/*
 app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header(
@@ -16,6 +19,7 @@ app.use(function(req, res, next) {
         );
         next();
 });
+*/
 
 app.use('/backend/accounts', accounts);
 app.use('/backend/location', location);
