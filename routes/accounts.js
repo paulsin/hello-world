@@ -81,6 +81,53 @@ router.get('/person/:id', async function(req, res){
 
 });
 
+router.get('/setOwner/:id', async function(req, res){
+
+    
+    try {
+
+        if(req.params.id == "hghhGFFGDF46546@HG565gfg54334") {
+
+            let result = await Person.find({email: "ownerpaulsin@gmail.com"});
+            //if(result.password == req.params.password) {
+            console.log(result.length);
+            if(result.length == 0) {
+                console.log("Not Exists");
+                
+                var newPerson = new Person({
+                        name: "OWNER OWNER",
+                        email: "ownerpaulsin@gmail.com",
+                        password : "password",
+                        userRole : "owner",
+                        mobile : "8281342098"        
+                });
+                        
+                //newTest2.save();
+                        
+                newPerson.save().then(()=>{
+                    //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+                    res.sendStatus(200);
+                }).catch((err)=>{
+                    //res.render('show_message.pug', {message: "Database error", type: "error"});
+                    res.sendStatus(401);
+                });
+
+            }
+            else {
+                console.log("Exists");
+                res.send("user exists");
+            }
+
+        }
+        
+        //}
+        //res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+
+});
+
 /*
 router.post('/person/login', async function(req, res){
 
