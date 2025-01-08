@@ -29,8 +29,11 @@ router.use(cors({
 }));
 
 var propertySchema = mongoose.Schema({
+    propertyType: String,    
+    transactionType: String,
     stateID: String,
-    districtID: String
+    districtID: String,
+    townID: String
 });
 
 var Property = mongoose.model("Property", propertySchema);
@@ -39,24 +42,36 @@ router.get('/', function(req, res) {
     res.send('GET ROUTE ON THINGS PAULSIN');
 }); 
 
+router.get('/properties', async function(req, res) {
+    try {
+        let result = await Property.find();
+        res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
+
 router.post('/addProperty', async function(req, res) {
 
     try {
-
-            var newState = new State({
-                stateName: req.body.stateName,
-                stateCode: req.body.stateCode    
-            });
+        
+        var newProperty = new Property({
+            propertyType: req.body.propertyType,    
+            transactionType: req.body.transactionType,
+            stateID: req.body.stateID,
+            districtID: req.body.districtID,
+            townID: req.body.townID 
+        });
                         
-            //newTest2.save();
-                        
-            newState.save().then(()=> {
-                //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-                res.sendStatus(200);
-            }).catch((err)=> {
-                //res.render('show_message.pug', {message: "Database error", type: "error"});
-                res.sendStatus(401);
-            });
+        //newTest2.save();
+                       
+        newProperty.save().then(()=> {
+            //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+            res.sendStatus(200);
+        }).catch((err)=> {
+            //res.render('show_message.pug', {message: "Database error", type: "error"});
+            res.sendStatus(401);
+        });
     
         //}
         //res.status(200).json(result);
