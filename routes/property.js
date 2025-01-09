@@ -80,4 +80,14 @@ router.post('/addProperty', async function(req, res) {
     }
 }); 
 
+router.post('/addPropertyImages', async function(req, res) {
+
+    try {
+        console.log("A new request received from IMages");                        
+        //res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
+
 module.exports = router;
