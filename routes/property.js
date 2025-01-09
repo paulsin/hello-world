@@ -1,6 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+const fileUpload = require('express-fileupload');
+
+const path = require('path')
 
 var app = express();
 
@@ -22,6 +25,10 @@ router.use(bodyParser.json());
 // for parsing application/xwww-
 router.use(bodyParser.urlencoded({ extended: true })); 
 //form-urlencoded
+
+router.use(fileUpload());
+
+router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(cors({
     origin: url, // Replace with your React app's origin
@@ -85,6 +92,13 @@ router.post('/addPropertyImages', async function(req, res) {
     try {
         console.log("A new request received from IMages");                        
         //res.status(200).json(result);
+
+        console.log(req.files);
+
+        const { image } = req.files;
+        if (!image) return res.sendStatus(400);
+
+        image.mv(__dirname + '/upload/' + image.name);
     } catch (error){
       res.status(500).json(error);
     }
