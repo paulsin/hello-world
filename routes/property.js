@@ -1,9 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-const fileUpload = require('express-fileupload');
+//const fileUpload = require('express-fileupload');
 
-const path = require('path')
+//const path = require('path')
 
 var app = express();
 
@@ -26,9 +26,10 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true })); 
 //form-urlencoded
 
-router.use(fileUpload());
+//router.use(fileUpload());
 
-router.use(express.static(path.join(__dirname, 'public')));
+//console.log(__dirname);
+//router.use('/cssFiles', express.static(__dirname + '/assets'));
 
 router.use(cors({
     origin: url, // Replace with your React app's origin
@@ -87,6 +88,7 @@ router.post('/addProperty', async function(req, res) {
     }
 }); 
 
+/*
 router.post('/addPropertyImages', async function(req, res) {
 
     try {
@@ -103,5 +105,5 @@ router.post('/addPropertyImages', async function(req, res) {
       res.status(500).json(error);
     }
 }); 
-
+*/
 module.exports = router;
