@@ -40,14 +40,21 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             
             const { image } = req.files;
 
-            console.log(image.name);
+            //console.log(image[0]);
+            console.log(image.length);
+
+            //console.log(image[0].name);
+            //console.log(image[1].name);
 
             if (!image) {
                 console.log("In not image");
                 return res.sendStatus(400);
             }
-    
-            image.mv(__dirname + '/assets/' + image.name);
+
+            for(i=0;i<image.length;i++) {
+                image[i].mv(__dirname + '/assets/' + image[i].name);
+            }
+            
         } catch (error){
           res.status(500).json(error);
         }
