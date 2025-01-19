@@ -24,7 +24,7 @@ app.use(function(req, res, next) {
 });
 
 console.log(__dirname);
-app.use('/cssFiles', express.static(__dirname + '/assets'));
+app.use('/backend/assets', express.static(__dirname + '/assets'));
 
 app.use('/backend/accounts', accounts);
 app.use('/backend/location', location);
@@ -51,8 +51,13 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                 return res.sendStatus(400);
             }
 
-            for(i=0;i<image.length;i++) {
-                image[i].mv(__dirname + '/assets/' + image[i].name);
+            if(image.length) {
+                for(i=0;i<image.length;i++) {
+                    image[i].mv(__dirname + '/assets/' + image[i].name);
+                }
+            }
+            else {
+                image.mv(__dirname + '/assets/' + image.name);
             }
             
         } catch (error){
