@@ -9,6 +9,8 @@ var accounts = require('./routes/accounts.js');
 var location = require('./routes/location.js');
 var property = require('./routes/property.js');
 
+var assetFolder = '/home/paulsin/assets/';
+
 global.databaseURL = 'mongodb://localhost/my_db';
 
 //app.use(cors());
@@ -25,7 +27,7 @@ app.use(function(req, res, next) {
 
 console.log(__dirname);
 //app.use('/backend/assets', express.static(__dirname + '/assets'));
-app.use('/backend/assets', express.static('/home/paulsin/assets'));
+app.use('/backend/assets', express.static(assetFolder));
 
 app.use('/backend/accounts', accounts);
 app.use('/backend/location', location);
@@ -55,12 +57,12 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             if(image.length) {
                 for(i=0;i<image.length;i++) {
                     //image[i].mv(__dirname + '/assets/' + image[i].name);
-                    image[i].mv('/home/paulsin/assets/' + image[i].name);
+                    image[i].mv(assetFolder + image[i].name);
                 }
             }
             else {
                 //image.mv(__dirname + '/assets/' + image.name);
-                image.mv('/home/paulsin/assets/' + image.name);
+                image.mv(assetFolder + image.name);
             }
             
         } catch (error){
