@@ -40,6 +40,7 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             //res.status(200).json(result);
     
             console.log(req.files);
+            //console.log(req.params.propertyID);
             
             const { image } = req.files;
 
