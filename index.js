@@ -40,7 +40,7 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             //res.status(200).json(result);
     
             console.log(req.files);
-            //console.log(req.params.propertyID);
+            let propertyID = req.body.propertyID;
             
             const { image } = req.files;
 
@@ -58,7 +58,8 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             if(image.length) {
                 for(i=0;i<image.length;i++) {
                     //image[i].mv(__dirname + '/assets/' + image[i].name);
-                    image[i].mv(assetFolder + image[i].name);
+                    //image[i].mv(assetFolder + image[i].name);
+                    image[i].mv(assetFolder + propertyID + '-' + Date.now() + '-' + i + '.jpg');
                 }
             }
             else {
