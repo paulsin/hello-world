@@ -88,6 +88,17 @@ router.post('/addProperty', async function(req, res) {
     }
 }); 
 
+
+router.get('/deleteProperty/:id', async function(req, res){
+    try {
+        const query = { _id: req.params.id };
+        let result = await Property.deleteOne(query);
+        res.send(result);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+ });
+
 /*
 router.post('/addPropertyImages', async function(req, res) {
 
