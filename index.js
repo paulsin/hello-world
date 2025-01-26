@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var mongoose = require('mongoose');
 //var cors = require('cors');
 
 const fileUpload = require('express-fileupload');
@@ -15,6 +16,13 @@ global.databaseURL = 'mongodb://localhost/my_db';
 
 //app.use(cors());
 
+var propertyImagesSchema = mongoose.Schema({
+    propertyID: String,    
+    updateTime: String,
+    imageName: String
+});
+
+var PropertyImages = mongoose.model("PropertyImages", propertyImagesSchema);
 
 app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -40,6 +48,7 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             //res.status(200).json(result);
     
             console.log(req.files);
+            var newPropertyImagesArray = [];
             let propertyID = req.body.propertyID;
             
             const { image } = req.files;
@@ -59,17 +68,62 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                 for(i=0;i<image.length;i++) {
                     //image[i].mv(__dirname + '/assets/' + image[i].name);
                     //image[i].mv(assetFolder + image[i].name);
-                    image[i].mv(assetFolder + propertyID + '-' + Date.now() + '-' + i + '.jpg');
+                    var imageNameTemp = propertyID + '-' + Date.now() + '-' + i + '.jpg';
+                    image[i].mv(assetFolder + imageNameTemp);
+
+                    var newPropertyImages = new PropertyImages({
+                        propertyID: propertyID,    
+                        updateTime: Date.now(),
+                        imageName: imageNameTemp
+                    });
+                                                                      
+                    newPropertyImages.save().then(()=> {
+                        //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+                        //res.sendStatus(200);
+                    }).catch((err)=> {
+                        //res.render('show_message.pug', {message: "Database error", type: "error"});
+                        res.sendStatus(401);
+                    });
+
                 }
             }
             else {
                 //image.mv(__dirname + '/assets/' + image.name);
-                image.mv(assetFolder + image.name);
+                var imageNameTemp = propertyID + '-' + Date.now() + '.jpg';
+                image.mv(assetFolder + imageNameTemp);
+
+                var newPropertyImages = new PropertyImages({
+                    propertyID: propertyID,    
+                    updateTime: Date.now(),
+                    imageName: imageNameTemp
+                });
+                                                                  
+                newPropertyImages.save().then(()=> {
+                    //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+                    res.sendStatus(200);
+                }).catch((err)=> {
+                    //res.render('show_message.pug', {message: "Database error", type: "error"});
+                    res.sendStatus(401);
+                });         
+                
+                
             }
             
         } catch (error){
           res.status(500).json(error);
         }
+    }); 
+
+    app.get('/backend/propertyImages/:propertyID', async function(req, res) {
+        console.log(req.params.propertyID);
+        try {
+            const query = { propertyID: req.params.propertyID };
+            let result = await PropertyImages.find(query);
+            res.status(200).json(result);
+        } catch (error){
+          res.status(500).json(error);
+        }
+
     }); 
 
 app.listen(3000);
