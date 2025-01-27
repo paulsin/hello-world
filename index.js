@@ -48,7 +48,6 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             //res.status(200).json(result);
     
             console.log(req.files);
-            var newPropertyImagesArray = [];
             let propertyID = req.body.propertyID;
             
             const { image } = req.files;
