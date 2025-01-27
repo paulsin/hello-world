@@ -1,7 +1,10 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+const path = require('path');
 //var cors = require('cors');
+
+const fs = require('fs');
 
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
@@ -19,7 +22,8 @@ global.databaseURL = 'mongodb://localhost/my_db';
 var propertyImagesSchema = mongoose.Schema({
     propertyID: String,    
     updateTime: String,
-    imageName: String
+    imageName: String,
+    index: Number
 });
 
 var PropertyImages = mongoose.model("PropertyImages", propertyImagesSchema);
@@ -64,11 +68,23 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             }
 
             if(image.length) {
+
+                var folderName = propertyID;
+
+                fs.mkdir(path.join(assetFolder, folderName),
+                (err) => {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    console.log('Directory created successfully!');
+                }); 
+
                 for(i=0;i<image.length;i++) {
                     //image[i].mv(__dirname + '/assets/' + image[i].name);
                     //image[i].mv(assetFolder + image[i].name);
                     var imageNameTemp = propertyID + '-' + Date.now() + '-' + i + '.jpg';
-                    image[i].mv(assetFolder + imageNameTemp);
+                    var tempFolder = assetFolder + '/' + folderName + '/';
+                    image[i].mv(tempFolder + imageNameTemp);
 
                     var newPropertyImages = new PropertyImages({
                         propertyID: propertyID,    
@@ -87,9 +103,21 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                 }
             }
             else {
+
+                var folderName = propertyID;
+
+                fs.mkdir(path.join(assetFolder, folderName),
+                (err) => {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    console.log('Directory created successfully!');
+                }); 
+
                 //image.mv(__dirname + '/assets/' + image.name);
                 var imageNameTemp = propertyID + '-' + Date.now() + '.jpg';
-                image.mv(assetFolder + imageNameTemp);
+                var tempFolder = assetFolder + '/' + folderName + '/';
+                image.mv(tempFolder + imageNameTemp);
 
                 var newPropertyImages = new PropertyImages({
                     propertyID: propertyID,    
@@ -109,21 +137,33 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             }
             
         } catch (error){
-          res.status(500).json(error);
+          res.status(500).json(error);  
         }
     }); 
 
-    app.get('/backend/propertyImages/:propertyID', async function(req, res) {
-        console.log(req.params.propertyID);
-        try {
-            const query = { propertyID: req.params.propertyID };
-            let result = await PropertyImages.find(query);
-            res.status(200).json(result);
-        } catch (error){
-          res.status(500).json(error);
-        }
+app.get('/backend/propertyImages/:propertyID', async function(req, res) {
+    console.log(req.params.propertyID);
+    try {
+        const query = { propertyID: req.params.propertyID };
+        let result = await PropertyImages.find(query);
+        res.status(200).json(result);
+    } catch (error){
+        res.status(500).json(error);
+    }
 
-    }); 
+}); 
+
+
+app.get('/backend/deletePropertyImages/:imageID', async function(req, res) {
+    console.log(req.params.imageID);
+    try {
+        const query = { _id: req.params.imageID };
+        let result = await PropertyImages.deleteOne(query);
+        res.send(result);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+}); 
 
 app.listen(3000);
 
