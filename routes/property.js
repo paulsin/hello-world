@@ -7,6 +7,9 @@ var mongoose = require('mongoose');
 
 var app = express();
 
+var assetFolder = '/home/paulsin/assets/';
+app.use('/backend/assets', express.static(assetFolder));
+
 mongoose.connect('mongodb://localhost/my_db');
 //mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
 
@@ -16,6 +19,8 @@ const cors = require('cors');
 
 const url = 'http://localhost:3001';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
+
+const fs = require('fs');
 
 var router = express.Router();
 
@@ -93,6 +98,9 @@ router.get('/deleteProperty/:id', async function(req, res){
     try {
         const query = { _id: req.params.id };
         let result = await Property.deleteOne(query);
+
+        fs.rm(assetFolder + req.params.id, { recursive: true }, () => console.log('done'));
+
         res.send(result);
     } catch(error) {
         res.status(500).json(error);

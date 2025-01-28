@@ -83,7 +83,7 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                     //image[i].mv(__dirname + '/assets/' + image[i].name);
                     //image[i].mv(assetFolder + image[i].name);
                     var imageNameTemp = propertyID + '-' + Date.now() + '-' + i + '.jpg';
-                    var tempFolder = assetFolder + '/' + folderName + '/';
+                    var tempFolder = assetFolder + folderName + '/';
                     image[i].mv(tempFolder + imageNameTemp);
 
                     var newPropertyImages = new PropertyImages({
@@ -99,8 +99,9 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                         //res.render('show_message.pug', {message: "Database error", type: "error"});
                         res.sendStatus(401);
                     });
-
                 }
+
+                res.sendStatus(200);
             }
             else {
 
@@ -116,7 +117,7 @@ app.post('/backend/addPropertyImages', async function(req, res) {
 
                 //image.mv(__dirname + '/assets/' + image.name);
                 var imageNameTemp = propertyID + '-' + Date.now() + '.jpg';
-                var tempFolder = assetFolder + '/' + folderName + '/';
+                var tempFolder = assetFolder + folderName + '/';
                 image.mv(tempFolder + imageNameTemp);
 
                 var newPropertyImages = new PropertyImages({
