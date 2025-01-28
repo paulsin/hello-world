@@ -154,11 +154,25 @@ app.get('/backend/propertyImages/:propertyID', async function(req, res) {
 }); 
 
 
-app.get('/backend/deletePropertyImages/:imageID', async function(req, res) {
+app.get('/backend/deletePropertyImages/:imageID/:propertyID/:imageName', async function(req, res) {
     console.log(req.params.imageID);
+    const filePath = assetFolder + req.params.propertyID + '/' + req.params.imageName;
+    console.log(filePath);
+
     try {
         const query = { _id: req.params.imageID };
         let result = await PropertyImages.deleteOne(query);
+
+        // Remove the file
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error(`Error removing file: ${err}`);
+                return;
+            }
+        
+            console.log(`File ${filePath} has been successfully removed.`);
+        });
+
         res.send(result);
     } catch(error) {
         res.status(500).json(error);
