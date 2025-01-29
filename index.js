@@ -13,20 +13,27 @@ var accounts = require('./routes/accounts.js');
 var location = require('./routes/location.js');
 var property = require('./routes/property.js');
 
-var assetFolder = '/home/paulsin/assets/';
+
+// app.use(function(req, res, next) {
+//     res.locals.assetFolder = 'D:/mearnpro/assets/';
+//     next();
+// });
+
+assetFolder="D:/mearnpro/assets/"
 
 global.databaseURL = 'mongodb://localhost/my_db';
+const propertImagesModel=require('./models/propertyimages');
 
 //app.use(cors());
 
-var propertyImagesSchema = mongoose.Schema({
-    propertyID: String,    
-    updateTime: String,
-    imageName: String,
-    index: Number
-});
+// var propertyImagesSchema = mongoose.Schema({
+//     propertyID: String,    
+//     updateTime: String,
+//     imageName: String,
+//     index: Number
+// });
 
-var PropertyImages = mongoose.model("PropertyImages", propertyImagesSchema);
+// var PropertyImages = mongoose.model("PropertyImages", propertyImagesSchema);
 
 app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -56,7 +63,7 @@ app.post('/backend/addPropertyImages', async function(req, res) {
             
             const { image } = req.files;
 
-            //console.log(image[0]);
+            // console.log(image[0]);
             console.log(image.length);
 
             //console.log(image[0].name);
@@ -84,9 +91,10 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                     //image[i].mv(assetFolder + image[i].name);
                     var imageNameTemp = propertyID + '-' + Date.now() + '-' + i + '.jpg';
                     var tempFolder = assetFolder + folderName + '/';
+                    console.log(tempFolder)
                     image[i].mv(tempFolder + imageNameTemp);
 
-                    var newPropertyImages = new PropertyImages({
+                    var newPropertyImages = new propertImagesModel({
                         propertyID: propertyID,    
                         updateTime: Date.now(),
                         imageName: imageNameTemp
@@ -94,17 +102,17 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                                                                       
                     newPropertyImages.save().then(()=> {
                         //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-                        //res.sendStatus(200);
+                        // res.sendStatus(200);
                     }).catch((err)=> {
                         //res.render('show_message.pug', {message: "Database error", type: "error"});
                         res.sendStatus(401);
                     });
                 }
-
+                console.log("rrrrrrrrrr")
                 res.sendStatus(200);
             }
             else {
-
+                console.log("htttttttt")
                 var folderName = propertyID;
 
                 fs.mkdir(path.join(assetFolder, folderName),
@@ -117,10 +125,12 @@ app.post('/backend/addPropertyImages', async function(req, res) {
 
                 //image.mv(__dirname + '/assets/' + image.name);
                 var imageNameTemp = propertyID + '-' + Date.now() + '.jpg';
+                console.log(imageNameTemp)
                 var tempFolder = assetFolder + folderName + '/';
+                console.log(tempFolder)
                 image.mv(tempFolder + imageNameTemp);
 
-                var newPropertyImages = new PropertyImages({
+                var newPropertyImages = new propertImagesModel({
                     propertyID: propertyID,    
                     updateTime: Date.now(),
                     imageName: imageNameTemp
@@ -128,9 +138,11 @@ app.post('/backend/addPropertyImages', async function(req, res) {
                                                                   
                 newPropertyImages.save().then(()=> {
                     //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+                    print("haiii")
                     res.sendStatus(200);
                 }).catch((err)=> {
                     //res.render('show_message.pug', {message: "Database error", type: "error"});
+                    print("jklll")
                     res.sendStatus(401);
                 });         
                 
@@ -146,7 +158,7 @@ app.get('/backend/propertyImages/:propertyID', async function(req, res) {
     console.log(req.params.propertyID);
     try {
         const query = { propertyID: req.params.propertyID };
-        let result = await PropertyImages.find(query);
+        let result = await propertImagesModel.find(query);
         res.status(200).json(result);
     } catch (error){
         res.status(500).json(error);
@@ -162,7 +174,7 @@ app.get('/backend/deletePropertyImages/:imageID/:propertyID/:imageName', async f
 
     try {
         const query = { _id: req.params.imageID };
-        let result = await PropertyImages.deleteOne(query);
+        let result = await propertImagesModel.deleteOne(query);
 
         // Remove the file
         fs.unlink(filePath, (err) => {

@@ -7,12 +7,13 @@ var mongoose = require('mongoose');
 
 var app = express();
 
-var assetFolder = '/home/paulsin/assets/';
+var assetFolder = 'D:/mearnpro/assets/';
+
 app.use('/backend/assets', express.static(assetFolder));
 
 mongoose.connect('mongodb://localhost/my_db');
 //mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
-
+const propertyModel=require('../models/property');
 const databasename = "my_db";
 
 const cors = require('cors');
@@ -41,15 +42,15 @@ router.use(cors({
     credentials: true // Allow credentials to be sent
 }));
 
-var propertySchema = mongoose.Schema({
-    propertyType: String,    
-    transactionType: String,
-    stateID: String,
-    districtID: String,
-    townID: String
-});
+// var propertySchema = mongoose.Schema({
+//     propertyType: String,    
+//     transactionType: String,
+//     stateID: String,
+//     districtID: String,
+//     townID: String
+// });
 
-var Property = mongoose.model("Property", propertySchema);
+// var Property = mongoose.model("Property", propertySchema);
 
 router.get('/', function(req, res) {
     res.send('GET ROUTE ON THINGS PAULSIN');
@@ -57,7 +58,7 @@ router.get('/', function(req, res) {
 
 router.get('/properties', async function(req, res) {
     try {
-        let result = await Property.find();
+        let result = await propertyModel.find();
         res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);
@@ -68,7 +69,7 @@ router.post('/addProperty', async function(req, res) {
 
     try {
         
-        var newProperty = new Property({
+        var newProperty = new propertyModel({
             propertyType: req.body.propertyType,    
             transactionType: req.body.transactionType,
             stateID: req.body.stateID,
@@ -97,7 +98,7 @@ router.post('/addProperty', async function(req, res) {
 router.get('/deleteProperty/:id', async function(req, res){
     try {
         const query = { _id: req.params.id };
-        let result = await Property.deleteOne(query);
+        let result = await propertyModel.deleteOne(query);
 
         fs.rm(assetFolder + req.params.id, { recursive: true }, () => console.log('done'));
 
