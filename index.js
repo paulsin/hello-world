@@ -13,9 +13,11 @@ var accounts = require('./routes/accounts.js');
 var location = require('./routes/location.js');
 var property = require('./routes/property.js');
 
-var assetFolder = '/home/paulsin/assets/';
+var globalVariables = require('./routes/globalVariables');
 
-global.databaseURL = 'mongodb://localhost/my_db';
+//var assetFolder = '/home/paulsin/assets/';
+
+//global.databaseURL = 'mongodb://localhost/my_db';
 
 //app.use(cors());
 

@@ -7,7 +7,9 @@ var mongoose = require('mongoose');
 
 var app = express();
 
-var assetFolder = '/home/paulsin/assets/';
+//global.assetFolder = '/home/paulsin/assets/';
+var globalVariables = require('./globalVariables');
+
 app.use('/backend/assets', express.static(assetFolder));
 
 mongoose.connect('mongodb://localhost/my_db');
@@ -111,6 +113,16 @@ router.get('/deleteProperty/:id', async function(req, res){
         res.status(500).json(error);
     }
  });
+
+
+ router.get('/individualProperty/:propertyID', async function(req, res) {
+    try {
+        let result = await Property.findById(req.params.propertyID);
+        res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
 
 /*
 router.post('/addPropertyImages', async function(req, res) {
