@@ -7,13 +7,12 @@ var mongoose = require('mongoose');
 
 var app = express();
 
-var assetFolder = 'D:/mearnpro/assets/';
-
+var assetFolder = '/home/paulsin/assets/';
 app.use('/backend/assets', express.static(assetFolder));
 
 mongoose.connect('mongodb://localhost/my_db');
 //mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
-const propertyModel=require('../models/property');
+
 const databasename = "my_db";
 
 const cors = require('cors');
@@ -42,15 +41,19 @@ router.use(cors({
     credentials: true // Allow credentials to be sent
 }));
 
-// var propertySchema = mongoose.Schema({
-//     propertyType: String,    
-//     transactionType: String,
-//     stateID: String,
-//     districtID: String,
-//     townID: String
-// });
+const Property = require('../models/property');
 
-// var Property = mongoose.model("Property", propertySchema);
+/*
+var propertySchema = mongoose.Schema({
+    propertyType: String,    
+    transactionType: String,
+    stateID: String,
+    districtID: String,
+    townID: String
+});
+
+var Property = mongoose.model("Property", propertySchema);
+*/
 
 router.get('/', function(req, res) {
     res.send('GET ROUTE ON THINGS PAULSIN');
@@ -58,7 +61,7 @@ router.get('/', function(req, res) {
 
 router.get('/properties', async function(req, res) {
     try {
-        let result = await propertyModel.find();
+        let result = await Property.find();
         res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);
@@ -69,12 +72,13 @@ router.post('/addProperty', async function(req, res) {
 
     try {
         
-        var newProperty = new propertyModel({
+        var newProperty = new Property({
             propertyType: req.body.propertyType,    
             transactionType: req.body.transactionType,
             stateID: req.body.stateID,
             districtID: req.body.districtID,
-            townID: req.body.townID 
+            townID: req.body.townID,
+            thumbnailImage : "" 
         });
                         
         //newTest2.save();
@@ -98,7 +102,7 @@ router.post('/addProperty', async function(req, res) {
 router.get('/deleteProperty/:id', async function(req, res){
     try {
         const query = { _id: req.params.id };
-        let result = await propertyModel.deleteOne(query);
+        let result = await Property.deleteOne(query);
 
         fs.rm(assetFolder + req.params.id, { recursive: true }, () => console.log('done'));
 
@@ -126,4 +130,5 @@ router.post('/addPropertyImages', async function(req, res) {
     }
 }); 
 */
+
 module.exports = router;

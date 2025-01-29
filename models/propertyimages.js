@@ -10,5 +10,5 @@ var propertyImagesSchema = mongoose.Schema({
 
 
 
-const propertImagesModel=mongoose.model("propertyImages",propertyImagesSchema)
-module.exports =propertImagesModel
+const propertyImagesModel=mongoose.model("propertyImages",propertyImagesSchema)
+module.exports =propertyImagesModel
