@@ -6,7 +6,8 @@ var propertySchema = mongoose.Schema({
     stateID: String,
     districtID: String,
     townID: String,
-    thumbnailImage: String
+    thumbnailImage: String,
+    thumbnailImageName: String
 });
 const propertyModel=mongoose.model("property",propertySchema)
 module.exports =propertyModel

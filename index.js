@@ -187,15 +187,25 @@ app.get('/backend/deletePropertyImages/:imageID/:propertyID/:imageName', async f
     }
 }); 
 
-app.get('/backend/setThumbnailPropertyImages/:imageID/:propertyID', async function(req, res) {
+app.get('/backend/setThumbnailPropertyImages/:imageID/:propertyID/:imageName', async function(req, res) {
     console.log(req.params.imageID);
     console.log(req.params.propertyID);
 
     try {
-        let result = await Property.findByIdAndUpdate(req.params.propertyID, {thumbnailImage: req.params.imageID});
+        let result = await Property.findByIdAndUpdate(req.params.propertyID, {thumbnailImage: req.params.imageID, thumbnailImageName: req.params.imageName});
         res.sendStatus(200);
     } catch(error) {
         res.status(500).json(error);
+    }
+}); 
+
+app.get('/backend/individualPropertyImage/:imageID', async function(req, res) {
+    // console.log(req.params.imageID);
+    try {
+        let result = await PropertyImages.findById(req.params.imageID);
+        res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
     }
 }); 
 
