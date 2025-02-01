@@ -101,6 +101,29 @@ router.post('/addProperty', async function(req, res) {
 }); 
 
 
+router.post('/editProperty', async function(req, res) {
+
+    try {
+        
+        var propertyID = req.body.propertyID;
+        var propertyType = req.body.propertyType;
+        var transactionType = req.body.transactionType;
+        var stateID = req.body.stateID;
+        var districtID = req.body.districtID;
+        var townID = req.body.townID; 
+                        
+        //newTest2.save();
+                       
+        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType});
+    
+        //}
+        //res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
+
+
 router.get('/deleteProperty/:id', async function(req, res){
     try {
         const query = { _id: req.params.id };
