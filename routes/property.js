@@ -113,8 +113,18 @@ router.post('/editProperty', async function(req, res) {
         var townID = req.body.townID; 
                         
         //newTest2.save();
-                       
-        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType});
+        console.log(propertyID)  
+        console.log(propertyType) 
+        console.log(stateID)  
+        console.log(transactionType)  
+        console.log(districtID)   
+        console.log(townID)       
+        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType,transactionType:req.body.transactionType,
+            stateID:req.body.stateID,districtID:req.body.districtID,townID:req.body.townID
+
+        })
+        // let result1= await Property.findByIdAndUpdate(req.body.propertyID,{stateID:req.body.stateID})
+        // ,{transactionType:req.body.transactionType},{stateID:req.body.stateID},{districtID:req.body.districtID},{townID:req.body.townID});
     
         //}
         //res.status(200).json(result);
