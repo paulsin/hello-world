@@ -128,6 +128,7 @@ router.post('/editProperty', async function(req, res) {
     
         //}
         //res.status(200).json(result);
+        res.sendStatus(200);
     } catch (error){
       res.status(500).json(error);
     }
