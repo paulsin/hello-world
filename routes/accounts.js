@@ -83,7 +83,7 @@ router.get('/person/:id', async function(req, res){
 
 router.get('/setOwner/:id', async function(req, res){
 
-    
+    //localhost:3001/accounts/setOwner/hghhGFFGDF46546@HG565gfg54334
     try {
 
         if(req.params.id == "hghhGFFGDF46546@HG565gfg54334") {
