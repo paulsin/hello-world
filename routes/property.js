@@ -71,22 +71,71 @@ router.get('/properties', async function(req, res) {
 }); 
 
 router.post('/addProperty', async function(req, res) {
+    // console.log(req.body.locality)
+    // console.log(req.body.cost)
+    // console.log(req.body.facing)
+    // console.log(req.body.numberOfFloors)
+    // console.log(req.body.builtArea)
+    // console.log(req.body.plotArea)
+    // console.log(req.body.totalVillas)
+    // console.log(req.body.bedrooms)
+    // console.log(req.body.bedroomsWithToilet)
+    // console.log(req.body.toilets)
+    // console.log(req.body.carParking)
+   // console.log(req.body.carPorch)
+    console.log(req.body.floorNumber)
+    // console.log(req.body.sitout)
+    // console.log(req.body.livingArea)
+    // console.log(req.body.diningHall)
+    // console.log(req.body.kitchen)
+    // console.log(req.body.workArea)
+    // console.log(req.body.upperLivingArea)
+    // console.log(req.body.balcony)
+    // console.log(req.body.openTerrace)
+    // console.log(req.body.waterWell)
+    // console.log(req.body.waterConnection)
 
     try {
-        
-        var newProperty = new Property({
-            propertyType: req.body.propertyType,    
-            transactionType: req.body.transactionType,
-            stateID: req.body.stateID,
-            districtID: req.body.districtID,
-            townID: req.body.townID,
-            thumbnailImage : "" 
-        });
+        // if(req.body.propertyType=="Villa")
+           console.log("haiii")
+            var newProperty = new Property({
+                propertyType: req.body.propertyType,    
+                transactionType: req.body.transactionType,
+                stateID: req.body.stateID,
+                districtID: req.body.districtID,
+                townID: req.body.townID,
+                thumbnailImage : "" ,
+                locality:req.body.locality,
+                cost:req.body.cost,
+                facing:req.body.facing,
+                numberOfFloors:req.body.numberOfFloors,
+                builtArea:req.body.builtArea,
+                plotArea:req.body.plotArea,
+                totalVillas:req.body.totalVillas,
+                floorNumber:req.body.floorNumber,
+                bedrooms:req.body.bedrooms,
+                bedroomsWithToilet :req.body.bedroomsWithToilet,
+                toilets:req.body.toilets,
+                carPorch:req.body.carPorch,
+                carParking:req.body.carParking,
+                sitout:req.body.sitout,
+                livingArea:req.body.livingArea,
+                diningHall:req.body.diningHall,
+                kitchen:req.body.kitchen,
+                workArea:req.body.workArea,
+                upperLivingArea:req.body.upperLivingArea,
+                balcony:req.body.balcony,
+                openTerrace:req.body.openTerrace,
+                waterWell:req.body.waterWell,
+                waterConnection:req.body.waterConnection
+
+            });
                         
         //newTest2.save();
                        
         newProperty.save().then(()=> {
             //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+            console.log("saved")
             res.sendStatus(200);
         }).catch((err)=> {
             //res.render('show_message.pug', {message: "Database error", type: "error"});
