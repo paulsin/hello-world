@@ -154,22 +154,70 @@ router.post('/editProperty', async function(req, res) {
 
     try {
         
+   
+
+           
         var propertyID = req.body.propertyID;
         var propertyType = req.body.propertyType;
         var transactionType = req.body.transactionType;
         var stateID = req.body.stateID;
         var districtID = req.body.districtID;
         var townID = req.body.townID; 
+
+        var locality=req.body.locality;
+        var cost=req.body.cost;
+        var facing = req.body.facing;
+        var numberOfFloors = req.body.numberOfFloors;
+        var builtArea = req.body.builtArea;
+        var plotArea = req.body.plotArea;
+        var totalVillas = req.body.totalVillas;
+        var floorNumber = req.body.floorNumber; 
+        var bedrooms = req.body.bedrooms;
+        var bedroomWithToilet = req.body.bedroomsWithToilet;
+        var toilets = req.body.toilets;
+        var carPorch=req.body.carPorch;
+        var carParking = req.body.carParking;
+        var sitout=req.body.sitout;
+        var  livingArea=req.body.livingArea;
+        var diningHall=req.body.diningHall;
+        var kitchen=req.body.kitchen;
+        var workArea=req.body.workArea;
+        var upperLivingArea=req.body.upperLivingArea;
+        var balcony=req.body.balcony;
+        var openTerrace=req.body.openTerrace;
+        var waterWell=req.body.waterWell;
+        var waterConnection=req.body.waterConnection
+        // var districtID = req.body.districtID;
+        // var townID = req.body.townID; 
+        
                         
         //newTest2.save();
-        console.log(propertyID)  
-        console.log(propertyType) 
-        console.log(stateID)  
-        console.log(transactionType)  
-        console.log(districtID)   
-        console.log(townID)       
+        // console.log(propertyID)  
+        // console.log(propertyType) 
+        // console.log(stateID)  
+        // console.log(transactionType)  
+        // console.log(districtID)   
+        // console.log(townID)   
+        // console.log(locality) 
+         // console.log(req.body.floorNumber)   
+        // console.log(carPorch)
+        //  console.log(sitout)
+        //  console.log(livingArea)
+        //  console.log(diningHall)
+        //  console.log(kitchen)
+        //  console.log(workArea)
+        //  console.log(upperLivingArea)
+        //  console.log(balcony)
+        //  console.log(openTerrace)
+        //  console.log(waterWell)
+        //  console.log(waterConnection)
         let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType,transactionType:req.body.transactionType,
-            stateID:req.body.stateID,districtID:req.body.districtID,townID:req.body.townID
+            stateID:req.body.stateID,districtID:req.body.districtID,townID:req.body.townID,locality:req.body.locality,cost:req.body.cost,facing:req.body.facing,
+            numberOfFloors:req.body.numberOfFloors,builtArea:req.body.builtArea,plotArea:req.body.plotArea,totalVillas: req.body.totalVillas,floorNumber: req.body.floorNumber,
+            bedrooms:req.body.bedrooms,bedroomWithToilet:req.body.bedroomsWithToilet,toilets:req.body.toilets,carPorch:req.body.carPorch,
+            carParking:req.body.carParking,sitout:req.body.sitout,livingArea:req.body.livingArea,diningHall:req.body.diningHall,kitchen:req.body.kitchen,
+            workArea:req.body.workArea,upperLivingArea:req.body.upperLivingArea,balcony:req.body.balcony,openTerrace:req.body.openTerrace,waterWell:req.body.waterWell,
+            waterConnection:req.body.waterConnection
 
         })
         // let result1= await Property.findByIdAndUpdate(req.body.propertyID,{stateID:req.body.stateID})
