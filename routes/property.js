@@ -93,7 +93,7 @@ router.post('/addProperty', async function(req, res) {
     // console.log(req.body.balcony)
     // console.log(req.body.openTerrace)
     // console.log(req.body.waterWell)
-    // console.log(req.body.waterConnection)
+    console.log(req.body.costType)
 
     try {
         // if(req.body.propertyType=="Villa")
@@ -107,6 +107,7 @@ router.post('/addProperty', async function(req, res) {
                 thumbnailImage : "" ,
                 locality:req.body.locality,
                 cost:req.body.cost,
+                costType:req.body.costType,
                 facing:req.body.facing,
                 numberOfFloors:req.body.numberOfFloors,
                 builtArea:req.body.builtArea,
@@ -156,7 +157,7 @@ router.post('/editProperty', async function(req, res) {
         
    
 
-           
+        // console.log(req.body.costType)  
         var propertyID = req.body.propertyID;
         var propertyType = req.body.propertyType;
         var transactionType = req.body.transactionType;
@@ -166,6 +167,7 @@ router.post('/editProperty', async function(req, res) {
 
         var locality=req.body.locality;
         var cost=req.body.cost;
+        var costType=req.body.costType;
         var facing = req.body.facing;
         var numberOfFloors = req.body.numberOfFloors;
         var builtArea = req.body.builtArea;
@@ -211,8 +213,9 @@ router.post('/editProperty', async function(req, res) {
         //  console.log(openTerrace)
         //  console.log(waterWell)
         //  console.log(waterConnection)
+        // console.log(costType)
         let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType,transactionType:req.body.transactionType,
-            stateID:req.body.stateID,districtID:req.body.districtID,townID:req.body.townID,locality:req.body.locality,cost:req.body.cost,facing:req.body.facing,
+            stateID:req.body.stateID,districtID:req.body.districtID,townID:req.body.townID,locality:req.body.locality,cost:req.body.cost,costType:req.body.costType,facing:req.body.facing,
             numberOfFloors:req.body.numberOfFloors,builtArea:req.body.builtArea,plotArea:req.body.plotArea,totalVillas: req.body.totalVillas,floorNumber: req.body.floorNumber,
             bedrooms:req.body.bedrooms,bedroomWithToilet:req.body.bedroomsWithToilet,toilets:req.body.toilets,carPorch:req.body.carPorch,
             carParking:req.body.carParking,sitout:req.body.sitout,livingArea:req.body.livingArea,diningHall:req.body.diningHall,kitchen:req.body.kitchen,
