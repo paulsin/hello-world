@@ -34,6 +34,7 @@ var propertySchema = mongoose.Schema({
     waterConnection : Boolean,
     googleMap : String,
     youtubeVideoLink : String,
+    propertyTitle : String,
     propertyFeature1 : String,
     propertyFeature2 : String,
     propertyFeature3 : String,
