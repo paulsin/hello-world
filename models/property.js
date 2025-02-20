@@ -40,8 +40,10 @@ var propertySchema = mongoose.Schema({
     propertyFeature3 : String,
     propertyFeature4 : String
 });
-const propertyModel=mongoose.model("property",propertySchema)
-module.exports =propertyModel
+
+const propertyModel=mongoose.model("property", propertySchema)
+
+module.exports = propertyModel
 
 
 
