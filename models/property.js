@@ -38,7 +38,8 @@ var propertySchema = mongoose.Schema({
     propertyFeature1 : String,
     propertyFeature2 : String,
     propertyFeature3 : String,
-    propertyFeature4 : String
+    propertyFeature4 : String,
+    ownerOrBuilderID : String
 });
 
 const propertyModel=mongoose.model("property", propertySchema)
