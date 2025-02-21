@@ -319,8 +319,10 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
                        
         newOwnerOrBuilder.save().then(()=> {
             //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-            console.log("saved")
-            res.sendStatus(200);
+            console.log("saved");
+            console.log(newOwnerOrBuilder._id);
+            res.send(newOwnerOrBuilder._id);
+            //res.sendStatus(200);
         }).catch((err)=> {
             //res.render('show_message.pug', {message: "Database error", type: "error"});
             res.sendStatus(401);
