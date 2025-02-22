@@ -19,8 +19,8 @@ const databasename = "my_db";
 
 const cors = require('cors');
 
-const url = 'http://localhost:3001';  // Localhost
-//const url = 'https://haberoceanstock.com/';  // Localhost
+//const url = 'http://localhost:3001';  // Localhost
+const url = 'https://agentfreedeal.com/';  // Localhost
 
 const fs = require('fs');
 
