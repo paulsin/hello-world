@@ -306,10 +306,15 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
     // console.log(req.body.locality)
     // console.log(req.body.cost)
     // console.log(req.body.facing)
-
     try {
-        // if(req.body.propertyType=="Villa")
-           console.log("haiii")
+
+        let result1 = await OwnerOrBuilder.find({contactNumber: req.body.contactNumber});
+        let result2 = await OwnerOrBuilder.find({secondNumber: req.body. secondNumber});
+        // console.log(result1.length);
+        console.log(result2.length);
+
+        if(result1.length == 0 && result2.length == 0) {
+
             var newOwnerOrBuilder = new OwnerOrBuilder({
                 contactNumber: req.body.contactNumber,    
                 secondNumber: req.body.secondNumber,
@@ -329,49 +334,8 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
         }).catch((err)=> {
             //res.render('show_message.pug', {message: "Database error", type: "error"});
             res.sendStatus(401);
-        });
-    
-        //}
-        //res.status(200).json(result);
-    } catch (error){
-      res.status(500).json(error);
-    }
-}); 
-
-
-router.post('/addOwnerOrBuilder', async function(req, res) {
-    // console.log(req.body.locality)
-    // console.log(req.body.cost)
-    // console.log(req.body.facing)
-    try {
-
-        let result1 = await OwnerOrBuilder.find({contactNumber: req.body.contactNumber});
-        let result2 = await OwnerOrBuilder.find({secondNumber: req.body. secondNumber});
-        // console.log(result1.length);
-        console.log(result2.length);
-
-        if(result1.length == 0 && result2.length == 0) {
-
-            var newOwnerOrBuilder = new OwnerOrBuilder({
-                contactNumber: req.body.contactNumber,    
-                secondNumber: req.body.secondNumber,
-                ownerOrBuilder: req.body.ownerOrBuilder,
-                name: req.body.name,
-                address: req.body.address,
-            });
-                        
-            //newTest2.save();
-                       
-            newOwnerOrBuilder.save().then(()=> {
-                //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-                console.log("saved");
-                console.log(newOwnerOrBuilder._id);
-                res.send(newOwnerOrBuilder._id);
-                //res.sendStatus(200);
-            }).catch((err)=> {
-                //res.render('show_message.pug', {message: "Database error", type: "error"});
-                res.sendStatus(401);
-            });
+        }
+    );
         }
         else if(result1.length > 0 && result2.length > 0) {
             res.send("both_exists");
@@ -389,6 +353,7 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
     } catch (error){
       res.status(500).json(error);
     }
+
 
 
     // try {
@@ -421,5 +386,20 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
     //   res.status(500).json(error);
     // }
 }); 
+
+
+router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
+    try {
+        const query = { _id: req.params.id };
+        let result = await OwnerOrBuilder.deleteOne(query);
+
+        //fs.rm(assetFolder + req.params.id, { recursive: true }, () => console.log('done'));
+
+        res.send(result);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+ });
+
 
 module.exports = router;
