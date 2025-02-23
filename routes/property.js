@@ -46,6 +46,8 @@ router.use(cors({
 const Property = require('../models/property');
 const OwnerOrBuilder = require('../models/ownerOrBuilder');
 
+const date = new Date();
+
 /*
 var propertySchema = mongoose.Schema({
     propertyType: String,    
@@ -144,8 +146,9 @@ router.post('/addProperty', async function(req, res) {
                 propertyFeature2:req.body.propertyFeature2,
                 propertyFeature3:req.body.propertyFeature3,
                 propertyFeature4:req.body.propertyFeature4,
-                ownerOrBuilderID: req.body.ownerOrBuilderID
-
+                ownerOrBuilderID: req.body.ownerOrBuilderID,
+                propertyStatus: req.body.propertyStatus,
+                propertyAddDate : date.getTime()
             });
                         
         //newTest2.save();
@@ -253,7 +256,7 @@ router.post('/editProperty', async function(req, res) {
             workArea:req.body.workArea, upperLivingArea:req.body.upperLivingArea, balcony:req.body.balcony, openTerrace:req.body.openTerrace, waterWell:req.body.waterWell,
             waterConnection:req.body.waterConnection,googleMap:req.body.googleMap,youtubeVideoLink:req.body.youtubeVideoLink,propertyTitle:req.body.propertyTitle,
             propertyFeature1:req.body.propertyFeature1, propertyFeature2:req.body.propertyFeature2,propertyFeature3:req.body.propertyFeature3,propertyFeature4:req.body.propertyFeature4,
-            ownerOrBuilderID : req.body.ownerOrBuilderID
+            ownerOrBuilderID : req.body.ownerOrBuilderID, propertyStatus: req.body.propertyStatus, propertyEditDate : date.getTime()
 
         })
         // let result1= await Property.findByIdAndUpdate(req.body.propertyID,{stateID:req.body.stateID})
