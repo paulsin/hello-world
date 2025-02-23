@@ -143,7 +143,8 @@ router.post('/addProperty', async function(req, res) {
                 propertyFeature1:req.body.propertyFeature1,
                 propertyFeature2:req.body.propertyFeature2,
                 propertyFeature3:req.body.propertyFeature3,
-                propertyFeature4:req.body.propertyFeature4
+                propertyFeature4:req.body.propertyFeature4,
+                ownerOrBuilderID: req.body.ownerOrBuilderID
 
             });
                         
@@ -211,6 +212,7 @@ router.post('/editProperty', async function(req, res) {
         var propertyFeature2=req.body.propertyFeature2;
         var propertyFeature3=req.body.propertyFeature3;
         var propertyFeature4=req.body.propertyFeature4
+        var ownerOrBuilderID = req.body.ownerOrBuilderID;
         // var districtID = req.body.districtID;
         // var townID = req.body.townID; 
         
@@ -243,14 +245,15 @@ router.post('/editProperty', async function(req, res) {
         // console.log(propertyFeature2)
         // console.log(propertyFeature3)
         // console.log(propertyFeature4)
-        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType,transactionType:req.body.transactionType,
-            stateID:req.body.stateID,districtID:req.body.districtID,townID:req.body.townID,locality:req.body.locality,cost:req.body.cost,costType:req.body.costType,facing:req.body.facing,
-            numberOfFloors:req.body.numberOfFloors,builtArea:req.body.builtArea,plotArea:req.body.plotArea,totalVillas: req.body.totalVillas,floorNumber: req.body.floorNumber,
-            bedrooms:req.body.bedrooms,bedroomWithToilet:req.body.bedroomsWithToilet,toilets:req.body.toilets,carPorch:req.body.carPorch,
-            carParking:req.body.carParking,sitout:req.body.sitout,livingArea:req.body.livingArea,diningHall:req.body.diningHall,kitchen:req.body.kitchen,
-            workArea:req.body.workArea,upperLivingArea:req.body.upperLivingArea,balcony:req.body.balcony,openTerrace:req.body.openTerrace,waterWell:req.body.waterWell,
+        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType, transactionType:req.body.transactionType,
+            stateID:req.body.stateID, districtID:req.body.districtID, townID:req.body.townID, locality:req.body.locality, cost:req.body.cost, costType:req.body.costType,facing:req.body.facing,
+            numberOfFloors:req.body.numberOfFloors, builtArea:req.body.builtArea, plotArea:req.body.plotArea, totalVillas: req.body.totalVillas, floorNumber: req.body.floorNumber,
+            bedrooms:req.body.bedrooms, bedroomWithToilet:req.body.bedroomsWithToilet, toilets:req.body.toilets, carPorch:req.body.carPorch,
+            carParking:req.body.carParking, sitout:req.body.sitout, livingArea:req.body.livingArea, diningHall:req.body.diningHall, kitchen:req.body.kitchen,
+            workArea:req.body.workArea, upperLivingArea:req.body.upperLivingArea, balcony:req.body.balcony, openTerrace:req.body.openTerrace, waterWell:req.body.waterWell,
             waterConnection:req.body.waterConnection,googleMap:req.body.googleMap,youtubeVideoLink:req.body.youtubeVideoLink,propertyTitle:req.body.propertyTitle,
-            propertyFeature1:req.body.propertyFeature1,propertyFeature2:req.body.propertyFeature2,propertyFeature3:req.body.propertyFeature3,propertyFeature4:req.body.propertyFeature4
+            propertyFeature1:req.body.propertyFeature1, propertyFeature2:req.body.propertyFeature2,propertyFeature3:req.body.propertyFeature3,propertyFeature4:req.body.propertyFeature4,
+            ownerOrBuilderID : req.body.ownerOrBuilderID
 
         })
         // let result1= await Property.findByIdAndUpdate(req.body.propertyID,{stateID:req.body.stateID})
@@ -335,23 +338,88 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
     }
 }); 
 
-/*
-router.post('/addPropertyImages', async function(req, res) {
 
+router.post('/addOwnerOrBuilder', async function(req, res) {
+    // console.log(req.body.locality)
+    // console.log(req.body.cost)
+    // console.log(req.body.facing)
     try {
-        console.log("A new request received from IMages");                        
-        //res.status(200).json(result);
 
-        console.log(req.files);
+        let result1 = await OwnerOrBuilder.find({contactNumber: req.body.contactNumber});
+        let result2 = await OwnerOrBuilder.find({secondNumber: req.body. secondNumber});
+        // console.log(result1.length);
+        console.log(result2.length);
 
-        const { image } = req.files;
-        if (!image) return res.sendStatus(400);
+        if(result1.length == 0 && result2.length == 0) {
 
-        image.mv(__dirname + '/upload/' + image.name);
+            var newOwnerOrBuilder = new OwnerOrBuilder({
+                contactNumber: req.body.contactNumber,    
+                secondNumber: req.body.secondNumber,
+                ownerOrBuilder: req.body.ownerOrBuilder,
+                name: req.body.name,
+                address: req.body.address,
+            });
+                        
+            //newTest2.save();
+                       
+            newOwnerOrBuilder.save().then(()=> {
+                //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+                console.log("saved");
+                console.log(newOwnerOrBuilder._id);
+                res.send(newOwnerOrBuilder._id);
+                //res.sendStatus(200);
+            }).catch((err)=> {
+                //res.render('show_message.pug', {message: "Database error", type: "error"});
+                res.sendStatus(401);
+            });
+        }
+        else if(result1.length > 0 && result2.length > 0) {
+            res.send("both_exists");
+        }
+        else if(result1.length > 0) {
+            res.send("firstnumber_exists");
+        }
+        else if(result2.length > 0) {
+            res.send("secondnumber_exists");
+        }
+
+    
+        //}
+        // res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);
     }
+
+
+    // try {
+    //     // if(req.body.propertyType=="Villa")
+    //        console.log("haiii")
+    //         var newOwnerOrBuilder = new OwnerOrBuilder({
+    //             contactNumber: req.body.contactNumber,    
+    //             secondNumber: req.body.secondNumber,
+    //             ownerOrBuilder: req.body.ownerOrBuilder,
+    //             name: req.body.name,
+    //             address: req.body.address,
+    //         });
+                        
+    //     //newTest2.save();
+                       
+    //     newOwnerOrBuilder.save().then(()=> {
+    //         //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+    //         console.log("saved");
+    //         console.log(newOwnerOrBuilder._id);
+    //         res.send(newOwnerOrBuilder._id);
+    //         //res.sendStatus(200);
+    //     }).catch((err)=> {
+    //         //res.render('show_message.pug', {message: "Database error", type: "error"});
+    //         res.sendStatus(401);
+    //     });
+    
+    //     //}
+    //     //res.status(200).json(result);
+    // } catch (error){
+    //   res.status(500).json(error);
+    // }
 }); 
-*/
 
 module.exports = router;
