@@ -21,8 +21,8 @@ const cors = require('cors');
 
 const twilio = require("twilio");
 
-const accountSid = "AC7e3fc92aff97de2cf1b9d5c65c0872a8";
-const authToken = "a9bd12c162d58049cb190e8836d71f66";
+const accountSid = "";
+const authToken = "";
 const client = twilio(accountSid, authToken);
 
 const url = 'http://localhost:3001';  // Localhost
