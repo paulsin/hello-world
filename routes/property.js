@@ -19,11 +19,13 @@ const databasename = "my_db";
 
 const cors = require('cors');
 
+/*
 const twilio = require("twilio");
 
 const accountSid = "";
 const authToken = "";
 const client = twilio(accountSid, authToken);
+*/
 
 const url = 'http://localhost:3001';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
@@ -413,6 +415,7 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
 
  router.get('/sendWhatsappMessage', async function(req, res){
     try {
+        /*
         const message = await client.messages.create({
             body: "Your appointment is coming up on July 21 at 3PM",
             from: "whatsapp:+13136376480",
@@ -420,6 +423,7 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
           });
         
           console.log(message.body);
+          */
     } catch(error) {
         res.status(500).json(error);
     }
