@@ -55,6 +55,7 @@ router.use(cors({
 
 const Property = require('../models/property');
 const OwnerOrBuilder = require('../models/ownerOrBuilder');
+const PropertyCustomerRequestForOwner = require('../models/propertyCustomerRequestForOwner');
 
 const date = new Date();
 
@@ -486,5 +487,45 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
         res.status(500).json(error);
     }
  });
+
+ router.get('/propertyCustomerRequestForOwnerAllRequests', async function(req, res){
+    try {
+        let result = await PropertyCustomerRequestForOwner.find();
+        res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+ });
+
+ router.post('/propertyCustomerRequestForOwnerSaveRequest', async function(req, res) {
+
+    try {
+        // if(req.body.propertyType=="Villa")
+        console.log("haiii")
+        var newPropertyCustomerRequestForOwner = new PropertyCustomerRequestForOwner({
+            propertyID: req.body.propertyID,    
+            requestTime: date.getTime(),
+            requesterMobile: req.body.requesterMobile,
+            requesterName: req.body.requesterName,
+            requesterMessage : req.body.requesterMessage,
+        });
+                        
+        //newTest2.save();
+                       
+        newPropertyCustomerRequestForOwner.save().then(()=> {
+            //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+            console.log("saved")
+            res.sendStatus(200);
+        }).catch((err)=> {
+            //res.render('show_message.pug', {message: "Database error", type: "error"});
+            res.sendStatus(401);
+        });
+    
+        //}
+        //res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
 
 module.exports = router;
