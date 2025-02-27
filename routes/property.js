@@ -21,9 +21,13 @@ const cors = require('cors');
 
 const twilio = require("twilio");
 
+
+//  For SMS and Whatsapp
+
 const accountSid = "AC7e3fc92aff97de2cf1b9d5c65c0872a8";
-const authToken = "a9bd12c162d58049cb190e8836d71f66";
+const authToken = "3dc2e975e24d6c2b1afb2bd8b944e5ec";
 const client = twilio(accountSid, authToken);
+
 
 const url = 'http://localhost:3001';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
@@ -411,15 +415,73 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
  });
 
 
- router.get('/sendWhatsappMessage', async function(req, res){
+ router.get('/sendSMSMessage', async function(req, res){
     try {
         const message = await client.messages.create({
             body: "Your appointment is coming up on July 21 at 3PM",
-            from: "whatsapp:+13136376480",
-            to: "whatsapp:+918281342098",
+            from: "+13136376480",
+            to: "+918281342098",
           });
         
           console.log(message.body);
+
+          res.sendStatus(200);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+ });
+
+
+ router.get('/sendWhatsappMessage', async function(req, res){
+    try {
+        client.messages
+        .create({
+            from: 'whatsapp:+14155238886',
+            contentSid: 'HXb5b62575e6e4ff6129ad7c8efe1f983e',
+            contentVariables: '{"1":"12/1","2":"3pm"}',
+            to: 'whatsapp:+918281342098'
+        })
+        .then(message => console.log(message.sid))
+        .done();
+
+          res.sendStatus(200);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+ });
+
+ router.get('/sendWhatsappMessage2', async function(req, res){
+    try {
+        client.messages
+        .create({
+            from: 'whatsapp:+14155238886',
+            contentSid: 'HXb5b62575e6e4ff6129ad7c8efe1f983e',
+            contentVariables: '{"1":"12/1","2":"3pm"}',
+            to: 'whatsapp:+919188338732'
+        })
+        .then(message => console.log(message.sid))
+        .done();
+
+          res.sendStatus(200);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+ });
+
+
+ router.get('/sendWhatsappMessage3', async function(req, res){
+    try {
+        client.messages
+        .create({
+            from: 'whatsapp:+14155238886',
+            contentSid: 'HXb5b62575e6e4ff6129ad7c8efe1f983e',
+            contentVariables: '{"1":"12/1","2":"3pm"}',
+            to: 'whatsapp:+918281957392'
+        })
+        .then(message => console.log(message.sid))
+        .done();
+
+          res.sendStatus(200);
     } catch(error) {
         res.status(500).json(error);
     }
