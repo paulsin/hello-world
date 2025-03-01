@@ -43,6 +43,7 @@ var propertySchema = mongoose.Schema({
     propertyStatus : String,
     propertyAddDate : Number,
     propertyEditDate : Number,
+    savedBy : String
 });
 
 const propertyModel=mongoose.model("property", propertySchema)

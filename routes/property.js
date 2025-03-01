@@ -3,6 +3,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 //const fileUpload = require('express-fileupload');
 
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
 //const path = require('path')
 
 var app = express();
@@ -52,6 +55,16 @@ router.use(cors({
     origin: url, // Replace with your React app's origin
     credentials: true // Allow credentials to be sent
 }));
+
+
+router.use(cookieParser());
+router.use(session({
+    secret: 'your_secret_key',
+    resave: true,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS    
+}));
+
 
 const Property = require('../models/property');
 const OwnerOrBuilder = require('../models/ownerOrBuilder');
@@ -159,7 +172,8 @@ router.post('/addProperty', async function(req, res) {
                 propertyFeature4:req.body.propertyFeature4,
                 ownerOrBuilderID: req.body.ownerOrBuilderID,
                 propertyStatus: req.body.propertyStatus,
-                propertyAddDate : date.getTime()
+                propertyAddDate : date.getTime(),
+                savedBy : req.session.userID
             });
                         
         //newTest2.save();
