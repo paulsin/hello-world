@@ -183,14 +183,15 @@ router.get('/logInFunction', async function(req, res){
         let result = await Person.find({email: req.query.username});
         if(result.length > 0) {
             //console.log(result[0].password);
-            console.log(result[0]._id);
+            //console.log(result[0]._id.toString());
+            //var userDBid = result[0]._id.toString();
             if(result[0].password == req.query.password) {
                 console.log("Logging successful");
                 //if(req.session.username) {
                     req.session.username = req.query.username;
                     req.session.password = req.query.password;
                     req.session.userRole = result[0].userRole;
-                    req.session.userID = result[0]._id;
+                    req.session.userID = result[0]._id.toString();
                     //req.session.save();
                 //}
                 //else {
@@ -226,7 +227,7 @@ router.get('/loggedInUser', async function(req, res){
 	try {
         //console.log(req.session.username);
         if(req.session.username && req.session.password) {
-            res.send({username : req.session.username, password : req.session.password, userRole : req.session.userRole, userID : req.session._id});
+            res.send({username : req.session.username, password : req.session.password, userRole : req.session.userRole, userID : req.session.userID});
         }
         else {
             res.send("not_logged_in");

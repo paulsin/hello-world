@@ -3,9 +3,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 //const fileUpload = require('express-fileupload');
 
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-
 //const path = require('path')
 
 var app = express();
@@ -54,15 +51,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(cors({
     origin: url, // Replace with your React app's origin
     credentials: true // Allow credentials to be sent
-}));
-
-
-router.use(cookieParser());
-router.use(session({
-    secret: 'your_secret_key',
-    resave: true,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS    
 }));
 
 
@@ -173,7 +161,7 @@ router.post('/addProperty', async function(req, res) {
                 ownerOrBuilderID: req.body.ownerOrBuilderID,
                 propertyStatus: req.body.propertyStatus,
                 propertyAddDate : date.getTime(),
-                savedBy : req.session.userID
+                savedBy : req.body.savedBy
             });
                         
         //newTest2.save();
