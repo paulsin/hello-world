@@ -489,7 +489,7 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
         .then(message => console.log(message.sid))
         .done();
 
-          res.sendStatus(200);
+        res.sendStatus(200);
     } catch(error) {
         res.status(500).json(error);
     }
@@ -534,5 +534,19 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
       res.status(500).json(error);
     }
 }); 
+
+
+router.get('/deletePropertyCustomerRequestForOwner/:id', async function(req, res){
+    try {
+        const query = { _id: req.params.id };
+        let result = await PropertyCustomerRequestForOwner.deleteOne(query);
+
+        //fs.rm(assetFolder + req.params.id, { recursive: true }, () => console.log('done'));
+
+        res.send(result);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+ });
 
 module.exports = router;
