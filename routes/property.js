@@ -58,7 +58,7 @@ const Property = require('../models/property');
 const OwnerOrBuilder = require('../models/ownerOrBuilder');
 const PropertyCustomerRequestForOwner = require('../models/propertyCustomerRequestForOwner');
 
-const date = new Date();
+//const date = new Date();
 
 /*
 var propertySchema = mongoose.Schema({
@@ -78,7 +78,7 @@ router.get('/', function(req, res) {
 
 router.get('/properties', async function(req, res) {
     try {
-        let result = await Property.find();
+        let result = await Property.find().sort({propertyEditDate : -1});
         res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);
@@ -116,6 +116,8 @@ router.post('/addProperty', async function(req, res) {
     // console.log(req.body.propertyFeature3)
     // console.log(req.body.propertyFeature4)
     // console.log(req.body.costType)
+
+    const date = new Date();
 
     try {
         // if(req.body.propertyType=="Villa")
@@ -161,6 +163,7 @@ router.post('/addProperty', async function(req, res) {
                 ownerOrBuilderID: req.body.ownerOrBuilderID,
                 propertyStatus: req.body.propertyStatus,
                 propertyAddDate : date.getTime(),
+                propertyEditDate : date.getTime(),
                 savedBy : req.body.savedBy
             });
                         
@@ -184,6 +187,8 @@ router.post('/addProperty', async function(req, res) {
 
 
 router.post('/editProperty', async function(req, res) {
+
+    const date = new Date();
 
     try {
         
@@ -492,7 +497,7 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
 
  router.get('/propertyCustomerRequestForOwnerAllRequests', async function(req, res){
     try {
-        let result = await PropertyCustomerRequestForOwner.find();
+        let result = await PropertyCustomerRequestForOwner.find().sort({requestTime : -1});
         res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);
@@ -500,7 +505,7 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
  });
 
  router.post('/propertyCustomerRequestForOwnerSaveRequest', async function(req, res) {
-
+    const date = new Date();
     try {
         // if(req.body.propertyType=="Villa")
         console.log("haiii")
