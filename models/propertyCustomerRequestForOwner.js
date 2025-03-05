@@ -7,6 +7,7 @@ var propertyCustomerRequestForOwnerSchema = mongoose.Schema({
     requesterMobile: String,
     requesterName: String,
     requesterMessage: String,
+    requestAssessmentStatus: String,
 });
 
 const propertyCustomerRequestForOwnerModel = mongoose.model("propertyCustomerRequestForOwner", propertyCustomerRequestForOwnerSchema)

@@ -274,7 +274,7 @@ router.post('/editProperty', async function(req, res) {
             workArea:req.body.workArea, upperLivingArea:req.body.upperLivingArea, balcony:req.body.balcony, openTerrace:req.body.openTerrace, waterWell:req.body.waterWell,
             waterConnection:req.body.waterConnection,googleMap:req.body.googleMap,youtubeVideoLink:req.body.youtubeVideoLink,propertyTitle:req.body.propertyTitle,
             propertyFeature1:req.body.propertyFeature1, propertyFeature2:req.body.propertyFeature2,propertyFeature3:req.body.propertyFeature3,propertyFeature4:req.body.propertyFeature4,
-            ownerOrBuilderID : req.body.ownerOrBuilderID, propertyStatus: req.body.propertyStatus, propertyEditDate : date.getTime()
+            ownerOrBuilderID : req.body.ownerOrBuilderID, propertyStatus: req.body.propertyStatus, propertyEditDate : date.getTime(), savedBy : req.body.savedBy
 
         })
         // let result1= await Property.findByIdAndUpdate(req.body.propertyID,{stateID:req.body.stateID})
@@ -515,6 +515,7 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
             requesterMobile: req.body.requesterMobile,
             requesterName: req.body.requesterName,
             requesterMessage : req.body.requesterMessage,
+            requestAssessmentStatus : "Pending"
         });
                         
         //newTest2.save();
