@@ -553,8 +553,6 @@ router.get('/deletePropertyCustomerRequestForOwner/:id', async function(req, res
 
  router.post('/editPropertyCustomerRequestForOwner', async function(req, res) {
 
-    const date = new Date();
-
     try {
         
         let result = await PropertyCustomerRequestForOwner.findByIdAndUpdate(req.body.id, { requestAssessmentStatus : req.body.requestAssessmentStatus
