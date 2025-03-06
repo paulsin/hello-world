@@ -550,4 +550,25 @@ router.get('/deletePropertyCustomerRequestForOwner/:id', async function(req, res
     }
  });
 
+
+ router.post('/editPropertyCustomerRequestForOwner', async function(req, res) {
+
+    const date = new Date();
+
+    try {
+        
+        let result = await PropertyCustomerRequestForOwner.findByIdAndUpdate(req.body.id, { requestAssessmentStatus : req.body.requestAssessmentStatus
+
+        })
+        // let result1= await Property.findByIdAndUpdate(req.body.propertyID,{stateID:req.body.stateID})
+        // ,{transactionType:req.body.transactionType},{stateID:req.body.stateID},{districtID:req.body.districtID},{townID:req.body.townID});
+    
+        //}
+        //res.status(200).json(result);
+        res.sendStatus(200);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
+
 module.exports = router;
