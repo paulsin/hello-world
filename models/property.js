@@ -3,6 +3,7 @@ const mongoose=require('mongoose');
 var propertySchema = mongoose.Schema({
     propertyType: String,    
     transactionType: String,
+    newOrOld: String,
     stateID: String,
     districtID: String,
     townID: String,
