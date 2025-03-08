@@ -86,6 +86,7 @@ router.get('/properties', async function(req, res) {
 }); 
 
 router.post('/addProperty', async function(req, res) {
+    console.log(req.body.newOrOld)
     // console.log(req.body.locality)
     // console.log(req.body.cost)
     // console.log(req.body.facing)
@@ -125,6 +126,7 @@ router.post('/addProperty', async function(req, res) {
             var newProperty = new Property({
                 propertyType: req.body.propertyType,    
                 transactionType: req.body.transactionType,
+                newOrOld:req.body.newOrOld,
                 stateID: req.body.stateID,
                 districtID: req.body.districtID,
                 townID: req.body.townID,
@@ -198,6 +200,7 @@ router.post('/editProperty', async function(req, res) {
         var propertyID = req.body.propertyID;
         var propertyType = req.body.propertyType;
         var transactionType = req.body.transactionType;
+        var newOrOld=req.body.newOrOld;
         var stateID = req.body.stateID;
         var districtID = req.body.districtID;
         var townID = req.body.townID; 
@@ -266,7 +269,7 @@ router.post('/editProperty', async function(req, res) {
         // console.log(propertyFeature2)
         // console.log(propertyFeature3)
         // console.log(propertyFeature4)
-        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType, transactionType:req.body.transactionType,
+        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType, transactionType:req.body.transactionType,newOrOld:req.body.newOrOld,
             stateID:req.body.stateID, districtID:req.body.districtID, townID:req.body.townID, locality:req.body.locality, cost:req.body.cost, costType:req.body.costType,facing:req.body.facing,
             numberOfFloors:req.body.numberOfFloors, builtArea:req.body.builtArea, plotArea:req.body.plotArea, totalVillas: req.body.totalVillas, floorNumber: req.body.floorNumber,
             bedrooms:req.body.bedrooms, bedroomWithToilet:req.body.bedroomsWithToilet, toilets:req.body.toilets, carPorch:req.body.carPorch,
