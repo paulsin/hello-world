@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+
 //const fileUpload = require('express-fileupload');
 
 //const path = require('path')
@@ -20,6 +21,7 @@ const databasename = "my_db";
 const cors = require('cors');
 
 const twilio = require("twilio");
+const nodemailer = require('nodemailer');
 
 
 //  For SMS and Whatsapp
@@ -551,6 +553,36 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
     } catch (error){
       res.status(500).json(error);
     }
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'anjup7818@gmail.com', // This is the email account used to send the email
+          pass: 'ojgv ihsl sqlj bxmx',  // Your email password (or App Password if using 2FA)
+        },
+    });
+    const mailOptions = {
+        from: 'anjup7818@gmail.com',  // sender email
+        to: 'paulsin91@gmail.com',    // recipient email (from the request body)
+        subject: "New Request From AgentFreeDeal",  // email subject (from the request body)
+        text: "A Contact Request Arrived.",      // email body (from the request body)
+    };
+    // try {
+    //     // Send the email
+    //     const info = await transporter.sendMail(mailOptions);
+    //     console.log('Email sent: ' + info.response);
+    //     res.status(200).send('Email sent successfully');
+    // } catch (error) {
+    //     console.log(error);
+    //     res.status(500).send('Error sending email');
+    // }
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log('Error sending email:', error);
+        } else {
+          console.log('Email sent successfully:', info.response);
+        }
+      });
+
 }); 
 
 
