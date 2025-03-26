@@ -456,17 +456,17 @@ router.post('/editOwnerOrBuilder', async function(req, res) {
         // console.log(req.body.id) 
         // console.log(req.body.name)
         // console.log(req.body.address)
-        console.log(req.body.ownerStatus)
+        // console.log(req.body.ownerStatus)
   
   
         var id = req.body.id;
         var name = req.body.name;
         var address=req.body.address;
-        var ownerStatus=req.body.ownerStatus
+        // var ownerStatus=req.body.ownerStatus
         // console.log(propertyID)  
         // console.log(propertyType) 
      
-        let result = await OwnerOrBuilder.findByIdAndUpdate(req.body.id, {name: req.body.name, address:req.body.address,ownerStatus:req.body.ownerStatus
+        let result = await OwnerOrBuilder.findByIdAndUpdate(req.body.id, {name: req.body.name, address:req.body.address
 
         })
       
