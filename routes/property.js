@@ -88,37 +88,49 @@ router.get('/properties', async function(req, res) {
 }); 
 
 router.post('/addProperty', async function(req, res) {
+    console.log(req.body.propertyType);    
+    console.log(req.body.transactionType);
     console.log(req.body.newOrOld)
-    // console.log(req.body.locality)
-    // console.log(req.body.cost)
-    // console.log(req.body.facing)
-    // console.log(req.body.numberOfFloors)
-    // console.log(req.body.builtArea)
-    // console.log(req.body.plotArea)
-    // console.log(req.body.totalVillas)
-    // console.log(req.body.bedrooms)
-    // console.log(req.body.bedroomsWithToilet)
-    // console.log(req.body.toilets)
-    // console.log(req.body.carParking)
-   // console.log(req.body.carPorch)
-    // console.log(req.body.floorNumber)
-    // console.log(req.body.sitout)
-    // console.log(req.body.livingArea)
-    // console.log(req.body.diningHall)
-    // console.log(req.body.kitchen)
-    // console.log(req.body.workArea)
-    // console.log(req.body.upperLivingArea)
-    // console.log(req.body.balcony)
-    // console.log(req.body.openTerrace)
-    // console.log(req.body.waterWell)
-    // console.log(req.body.googleMap)
-    // console.log(req.body.youtubeVideoLink)
-    // console.log(req.body.propertyTitle)
-    // console.log(req.body.propertyFeature1)
-    // console.log(req.body.propertyFeature2)
-    // console.log(req.body.propertyFeature3)
-    // console.log(req.body.propertyFeature4)
-    // console.log(req.body.costType)
+    console.log(req.body.stateID);
+    console.log(req.body.districtID);
+    console.log(req.body.townID);
+
+ 
+    console.log(req.body.locality)
+    console.log(req.body.cost)
+    console.log(req.body.costType)
+    console.log(req.body.facing)
+    console.log(req.body.numberOfFloors)
+    console.log(req.body.builtArea)
+    console.log(req.body.plotArea)
+    console.log(req.body.totalVillas)
+    console.log(req.body.bedrooms)
+    console.log(req.body.bedroomsWithToilet)
+    console.log(req.body.toilets)
+    console.log(req.body.carParking)
+   console.log(req.body.carPorch)
+    console.log(req.body.floorNumber)
+    console.log(req.body.sitout)
+    console.log(req.body.livingArea)
+    console.log(req.body.diningHall)
+    console.log(req.body.kitchen)
+    console.log(req.body.workArea)
+    console.log(req.body.upperLivingArea)
+    console.log(req.body.balcony)
+    console.log(req.body.openTerrace)
+    console.log(req.body.waterWell)
+    console.log(req.body.googleMap)
+    console.log(req.body.youtubeVideoLink)
+    console.log(req.body.propertyTitle)
+    console.log(req.body.propertyFeature1)
+    console.log(req.body.propertyFeature2)
+    console.log(req.body.propertyFeature3)
+    console.log(req.body.propertyFeature4)
+    console.log(req.body.ownerOrBuilderID)
+    console.log(req.body.propertyStatus)
+   
+  
+    console.log(req.body.savedBy)
 
     const date = new Date();
 
@@ -340,6 +352,7 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
     // console.log(req.body.locality)
     // console.log(req.body.cost)
     // console.log(req.body.facing)
+    const date = new Date();
     try {
 
         let result1 = await OwnerOrBuilder.find({contactNumber: req.body.contactNumber});
@@ -355,6 +368,8 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
                 ownerOrBuilder: req.body.ownerOrBuilder,
                 name: req.body.name,
                 address: req.body.address,
+                ownerStatus:"Public",
+                ownerAddDate:date.getTime()
             });
                         
         //newTest2.save();
@@ -421,11 +436,48 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
     // }
 }); 
 
+router.get('/individualOwnerOrBuilder/:id', async function(req, res) {
+    try {
+        let result = await OwnerOrBuilder.findById(req.params.id);
+        res.status(200).json(result);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
+
+router.post('/editOwnerOrBuilder', async function(req, res) {
+
+    const date = new Date();
+
+    try {
+        
+   
+
+        // console.log(req.body.id) 
+        // console.log(req.body.name)
+        // console.log(req.body.address)
+  
+        var id = req.body.id;
+        var name = req.body.name;
+        var address=req.body.address;
+        // console.log(propertyID)  
+        // console.log(propertyType) 
+     
+        let result = await OwnerOrBuilder.findByIdAndUpdate(req.body.id, {name: req.body.name, address:req.body.address
+
+        })
+      
+        res.sendStatus(200);
+    } catch (error){
+      res.status(500).json(error);
+    }
+}); 
 
 router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
     try {
         const query = { _id: req.params.id };
-
+        let result = await OwnerOrBuilder.findByIdAndUpdate(req.params.id, {ownerStatus: "Draft"});
+        res.send(result);
         /*
 
         let result = await OwnerOrBuilder.deleteOne(query);
@@ -435,7 +487,7 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
         res.send(result);
         */
 
-        res.sendStatus(200);
+        
     } catch(error) {
         res.status(500).json(error);
     }

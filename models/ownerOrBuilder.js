@@ -5,7 +5,9 @@ var ownerOrBuilderSchema = mongoose.Schema({
     secondNumber : String,
     ownerOrBuilder : String,
     name : String,
-    address : String   
+    address : String,
+    ownerStatus:String, 
+    ownerAddDate:Number 
 });
 
 const ownerOrBuilderModel=mongoose.model("ownerOrBuilder", ownerOrBuilderSchema)
