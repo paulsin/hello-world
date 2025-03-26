@@ -466,7 +466,7 @@ router.post('/editOwnerOrBuilder', async function(req, res) {
         // console.log(propertyID)  
         // console.log(propertyType) 
      
-        let result = await OwnerOrBuilder.findByIdAndUpdate(req.body.id, {name: req.body.name, address:req.body.address
+        let result = await OwnerOrBuilder.findByIdAndUpdate(req.body.id, {name: req.body.name, address:req.body.address,ownerAddDate: date.getTime()
 
         })
       
