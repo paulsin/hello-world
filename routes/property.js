@@ -78,6 +78,19 @@ router.get('/', function(req, res) {
     res.send('GET ROUTE ON THINGS PAULSIN');
 }); 
 
+const generateCustomId = async () => {
+    const lastProperty = await Property.findOne().sort({ _id: -1 });
+  
+    if (!lastProperty || !lastProperty.id) {
+      return "AFD101"; // Default starting ID if no user exists
+    }
+  
+    // Extract number (e.g., KL101 → 101)
+    const lastIdNum = parseInt(lastProperty.id.replace("AFD", ""), 10);
+  
+    // Generate the new ID
+    return `AFD${lastIdNum + 1}`;
+  };
 router.get('/properties', async function(req, res) {
     try {
         let result = await Property.find().sort({propertyEditDate : -1});
@@ -131,13 +144,15 @@ router.post('/addProperty', async function(req, res) {
    
   
     console.log(req.body.savedBy)
-
+    const newId = await generateCustomId();
+    console.log(newId)
     const date = new Date();
 
     try {
         // if(req.body.propertyType=="Villa")
            console.log("haiii")
             var newProperty = new Property({
+                id: newId,
                 propertyType: req.body.propertyType,    
                 transactionType: req.body.transactionType,
                 newOrOld:req.body.newOrOld,
@@ -210,8 +225,9 @@ router.post('/editProperty', async function(req, res) {
         
    
 
-        // console.log(req.body.costType)  
+        console.log(req.body.id)  
         var propertyID = req.body.propertyID;
+        var id=req.body.id;
         var propertyType = req.body.propertyType;
         var transactionType = req.body.transactionType;
         var newOrOld=req.body.newOrOld;
@@ -283,7 +299,7 @@ router.post('/editProperty', async function(req, res) {
         // console.log(propertyFeature2)
         // console.log(propertyFeature3)
         // console.log(propertyFeature4)
-        let result = await Property.findByIdAndUpdate(req.body.propertyID, {propertyType: req.body.propertyType, transactionType:req.body.transactionType,newOrOld:req.body.newOrOld,
+        let result = await Property.findByIdAndUpdate(req.body.propertyID, {id:req.body.id,propertyType: req.body.propertyType, transactionType:req.body.transactionType,newOrOld:req.body.newOrOld,
             stateID:req.body.stateID, districtID:req.body.districtID, townID:req.body.townID, locality:req.body.locality, cost:req.body.cost, costType:req.body.costType,facing:req.body.facing,
             numberOfFloors:req.body.numberOfFloors, builtArea:req.body.builtArea, plotArea:req.body.plotArea, totalVillas: req.body.totalVillas, floorNumber: req.body.floorNumber,
             bedrooms:req.body.bedrooms, bedroomWithToilet:req.body.bedroomsWithToilet, toilets:req.body.toilets, carPorch:req.body.carPorch,
@@ -337,10 +353,31 @@ router.get('/deleteProperty/:id', async function(req, res){
     }
 }); 
 
-
+router.get('/updateExistingProperties', async function(req, res) {
+// const updateExistingProperties = async () => {
+    try {
+        const properties = await Property.find().sort({ _id: 1 }); // Get all users sorted by _id
+    
+        let counter = 101; // Start from KL101
+        for (const property of properties) {
+        const newId = `AFD${counter}`;
+        await Property.updateOne({ _id: property._id }, { $set: { id: newId } });
+        //   console.log(`Updated ${user.name} with ID: ${newId}`);
+        counter++;
+        }
+    
+        console.log("All users updated!");
+        //mongoose.connection.close();
+        res.sendStatus(200);
+    }
+    catch (error){
+        res.status(500).json(error);
+    }
+  });
+  
 router.get('/ownersandbuilders', async function(req, res) {
     try {
-        let result = await OwnerOrBuilder.find();
+        let result = await OwnerOrBuilder.find().sort({ownerAddDate : -1})
         res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);

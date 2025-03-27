@@ -1,6 +1,7 @@
 const mongoose=require('mongoose');
 
 var propertySchema = mongoose.Schema({
+    id:String,
     propertyType: String,    
     transactionType: String,
     newOrOld: String,
