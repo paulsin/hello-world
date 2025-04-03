@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost/my_db');
 
 const cors = require('cors');
 
-const url = 'http://localhost:3001';  // Localhost
+const url = 'http://localhost:5173';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
 
 
@@ -58,9 +58,10 @@ router.get('/person', async function(req, res){
     //res.send("Hello world");
 
 	////////////////  Get all data
-	
+	// console.log("DFdxgf")
 	try {
         let result = await Person.find();
+        //console.log(result)
         res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);

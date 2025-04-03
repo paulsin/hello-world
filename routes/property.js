@@ -31,7 +31,7 @@ const authToken = "3dc2e975e24d6c2b1afb2bd8b944e5ec";
 const client = twilio(accountSid, authToken);
 
 
-const url = 'http://localhost:3001';  // Localhost
+const url = 'http://localhost:5173';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
 
 const fs = require('fs');
@@ -353,27 +353,27 @@ router.get('/deleteProperty/:id', async function(req, res){
     }
 }); 
 
-router.get('/updateExistingProperties', async function(req, res) {
-// const updateExistingProperties = async () => {
-    try {
-        const properties = await Property.find().sort({ _id: 1 }); // Get all users sorted by _id
+// router.get('/updateExistingProperties', async function(req, res) {
+// // const updateExistingProperties = async () => {
+//     try {
+//         const properties = await Property.find().sort({ _id: 1 }); // Get all users sorted by _id
     
-        let counter = 101; // Start from KL101
-        for (const property of properties) {
-        const newId = `AFD${counter}`;
-        await Property.updateOne({ _id: property._id }, { $set: { id: newId } });
-        //   console.log(`Updated ${user.name} with ID: ${newId}`);
-        counter++;
-        }
+//         let counter = 101; // Start from KL101
+//         for (const property of properties) {
+//         const newId = `AFD${counter}`;
+//         await Property.updateOne({ _id: property._id }, { $set: { id: newId } });
+//         //   console.log(`Updated ${user.name} with ID: ${newId}`);
+//         counter++;
+//         }
     
-        console.log("All users updated!");
-        //mongoose.connection.close();
-        res.sendStatus(200);
-    }
-    catch (error){
-        res.status(500).json(error);
-    }
-  });
+//         console.log("All users updated!");
+//         //mongoose.connection.close();
+//         res.sendStatus(200);
+//     }
+//     catch (error){
+//         res.status(500).json(error);
+//     }
+//   });
   
 router.get('/ownersandbuilders', async function(req, res) {
     try {
