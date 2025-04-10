@@ -47,7 +47,9 @@ var personSchema = mongoose.Schema({
     mobile : String
  });
 
+
  var Person = mongoose.model("Person", personSchema);
+ 
 
 router.get('/', function(req, res) {
     res.send('GET ROUTE ON THINGS PAULSIN');
@@ -336,5 +338,8 @@ router.get('/pageCount', function(req, res){
        
     //res.send({username : req.session.username});
  });
+
+ 
+
 
 module.exports = router;

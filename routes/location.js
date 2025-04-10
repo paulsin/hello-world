@@ -46,16 +46,23 @@ var stateSchema = mongoose.Schema({
  var State = mongoose.model("State", stateSchema);
  var District = mongoose.model("District", districtSchema);
  var Town = mongoose.model("Town", townSchema);
+ const History=require('../models/history');
 
  router.get('/', function(req, res) {
     res.send('GET ROUTE ON THINGS PAULSIN');
 }); 
 
 router.post('/state', async function(req, res) {
+    const date = new Date();
+    console.log(req.body.donebyUserId)
+    
     var personInfo = req.body; //Get the parsed information
     console.log("A new request received at " + Date.now());
     //res.send("You just called the post method at '/hello'!");
-    console.log("A new request received at " + personInfo.name);
+    // console.log("A new request received at " + personInfo.name);
+    var donebyUserId=req.body.donebyUserId;
+    var donebyUserName=req.body.donebyUserName;
+    var donebyUserrole=req.body.donebyUserrole;
 
     try {
 
@@ -75,7 +82,23 @@ router.post('/state', async function(req, res) {
                         
             newState.save().then(()=> {
                 //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-                res.sendStatus(200);
+                var newHistory = new History({
+                    donebyUserId: donebyUserId,    
+                    donebyUserName: donebyUserName,
+                    dateOperation:  date.getTime(),
+                    donebyUserrole : donebyUserrole,
+                    operation: "Adding State",
+                
+                });
+                                
+              
+                            
+                newHistory.save().then(()=> {
+                    console.log("Added");
+                    res.sendStatus(200);
+        
+                });
+              
             }).catch((err)=> {
                 //res.render('show_message.pug', {message: "Database error", type: "error"});
                 res.sendStatus(401);
@@ -115,6 +138,8 @@ router.get('/states', async function(req, res){
 });
 
 router.post('/updateState/:id', async (req, res) => {
+    console.log(req.body.donebyUserId)
+    const date = new Date();
 /*
 	try {   
         let result = await State.findByIdAndUpdate(req.params.id, {stateName: req.body.stateName, stateCode: req.body.stateCode});
@@ -124,7 +149,9 @@ router.post('/updateState/:id', async (req, res) => {
     }
 */
     //res.sendStatus(200);
-
+    var donebyUserId=req.body.donebyUserId;
+    var donebyUserName=req.body.donebyUserName;
+    var donebyUserrole=req.body.donebyUserrole;
     var result1Length = 0;
     var result2Length = 0;
 
@@ -171,9 +198,25 @@ router.post('/updateState/:id', async (req, res) => {
             res.send("code_exists");
         }
         else {
-            res.sendStatus(200);
+            var newHistory = new History({
+                donebyUserId: donebyUserId,    
+                donebyUserName: donebyUserName,
+                dateOperation:  date.getTime(),
+                donebyUserrole : donebyUserrole,
+                operation: "Updating State",
+            
+            });
+                            
+          
+                        
+            newHistory.save().then(()=> {
+                console.log("updated");
+                res.sendStatus(200);
+    
+            });
+            // res.sendStatus(200);
         }
-
+      
     
         //}
         //res.status(200).json(result);
@@ -193,7 +236,10 @@ router.post('/updateDistrict/:id', async (req, res) => {
         }
     */
         //res.sendStatus(200);
-    
+        const date = new Date();
+        var donebyUserId=req.body.donebyUserId;
+        var donebyUserName=req.body.donebyUserName;
+        var donebyUserrole=req.body.donebyUserrole;
         var result1Length = 0;
         var result2Length = 0;
     
@@ -240,7 +286,22 @@ router.post('/updateDistrict/:id', async (req, res) => {
                 res.send("code_exists");
             }
             else {
-                res.sendStatus(200);
+                var newHistory = new History({
+                    donebyUserId: donebyUserId,    
+                    donebyUserName: donebyUserName,
+                    dateOperation:  date.getTime(),
+                    donebyUserrole : donebyUserrole,
+                    operation: "Updating District",
+                
+                });
+                                
+              
+                            
+                newHistory.save().then(()=> {
+                    console.log("Added");
+                    res.sendStatus(200);
+        
+                });
             }
     
         
@@ -253,6 +314,10 @@ router.post('/updateDistrict/:id', async (req, res) => {
     });
 
     router.post('/updateTown/:id', async (req, res) => {
+        const date = new Date();
+        var donebyUserId=req.body.donebyUserId;
+        var donebyUserName=req.body.donebyUserName;
+        var donebyUserrole=req.body.donebyUserrole;
         
             var result1Length = 0;
             var result2Length = 0;
@@ -300,7 +365,22 @@ router.post('/updateDistrict/:id', async (req, res) => {
                     res.send("code_exists");
                 }
                 else {
-                    res.sendStatus(200);
+                    var newHistory = new History({
+                        donebyUserId: donebyUserId,    
+                        donebyUserName: donebyUserName,
+                        dateOperation:  date.getTime(),
+                        donebyUserrole : donebyUserrole,
+                        operation: "Updating Town",
+                    
+                    });
+                                    
+                  
+                                
+                    newHistory.save().then(()=> {
+                        console.log("Added");
+                        res.sendStatus(200);
+            
+                    });
                 }
         
             
@@ -352,6 +432,10 @@ router.get('/deleteState/:id', async function(req, res){
  });
 
 router.post('/district', async function(req, res) {
+    const date = new Date();
+    var donebyUserId=req.body.donebyUserId;
+    var donebyUserName=req.body.donebyUserName;
+    var donebyUserrole=req.body.donebyUserrole;
 
     try {
 
@@ -381,9 +465,26 @@ router.post('/district', async function(req, res) {
                         
             //newTest2.save();
                         
-            newDistrict.save().then(()=> {
+            await newDistrict.save().then(()=> {
+                var newHistory = new History({
+                    donebyUserId: donebyUserId,    
+                    donebyUserName: donebyUserName,
+                    dateOperation:  date.getTime(),
+                    donebyUserrole : donebyUserrole,
+                    operation: "Adding District",
+                
+                });
+                                
+              
+                            
+                newHistory.save().then(()=> {
+                    console.log("Added");
+                    res.sendStatus(200);
+                    
+        
+                });
                 //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-                res.sendStatus(200);
+                
             }).catch((err)=>{
                 //res.render('show_message.pug', {message: "Database error", type: "error"});
                 res.sendStatus(401);
@@ -423,6 +524,10 @@ router.get('/districts', async function(req, res){
 });
 
 router.post('/town', async function(req, res) {
+    const date = new Date();
+    var donebyUserId=req.body.donebyUserId;
+    var donebyUserName=req.body.donebyUserName;
+    var donebyUserrole=req.body.donebyUserrole;
 
     try {
 
@@ -455,9 +560,25 @@ router.post('/town', async function(req, res) {
                         
             //newTest2.save();
                         
-            newTown.save().then(()=> {
+            await newTown.save().then(()=> {
+                var newHistory = new History({
+                    donebyUserId: donebyUserId,    
+                    donebyUserName: donebyUserName,
+                    dateOperation:  date.getTime(),
+                    donebyUserrole : donebyUserrole,
+                    operation: "Adding Town",
+                
+                });
+                                
+              
+                            
+                newHistory.save().then(()=> {
+                    console.log("Added");
+                    res.sendStatus(200);
+        
+                });
                 //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-                res.sendStatus(200);
+               
             }).catch((err)=>{
                 //res.render('show_message.pug', {message: "Database error", type: "error"});
                 res.sendStatus(401);

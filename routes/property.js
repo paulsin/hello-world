@@ -58,7 +58,9 @@ router.use(cors({
 
 const Property = require('../models/property');
 const OwnerOrBuilder = require('../models/ownerOrBuilder');
+const History=require('../models/history');
 const PropertyCustomerRequestForOwner = require('../models/propertyCustomerRequestForOwner');
+
 
 //const date = new Date();
 
@@ -147,6 +149,9 @@ router.post('/addProperty', async function(req, res) {
     const newId = await generateCustomId();
     console.log(newId)
     const date = new Date();
+    var donebyUserId=req.body.donebyUserId;
+    var donebyUserName=req.body.donebyUserName;
+    var donebyUserrole=req.body.donebyUserrole;
 
     try {
         // if(req.body.propertyType=="Villa")
@@ -202,8 +207,27 @@ router.post('/addProperty', async function(req, res) {
                        
         newProperty.save().then(()=> {
             //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-            console.log("saved")
-            res.sendStatus(200);
+            // console.log("saved")
+            
+            var newHistory = new History({
+                donebyUserId: donebyUserId,    
+                donebyUserName: donebyUserName,
+                dateOperation:  date.getTime(),
+                donebyUserrole : donebyUserrole,
+                operation: "Adding Property",
+            
+            });
+                            
+          
+                        
+            newHistory.save().then(()=> {
+                console.log("Added");
+                res.sendStatus(200);
+    
+            });
+        
+
+            // res.sendStatus(200);
         }).catch((err)=> {
             //res.render('show_message.pug', {message: "Database error", type: "error"});
             res.sendStatus(401);
@@ -218,6 +242,9 @@ router.post('/addProperty', async function(req, res) {
 
 
 router.post('/editProperty', async function(req, res) {
+    var donebyUserId=req.body.donebyUserId;
+    var donebyUserName=req.body.donebyUserName;
+    var donebyUserrole=req.body.donebyUserrole;
 
     const date = new Date();
 
@@ -225,7 +252,7 @@ router.post('/editProperty', async function(req, res) {
         
    
 
-        console.log(req.body.id)  
+        console.log(req.body.propertyStatus)  
         var propertyID = req.body.propertyID;
         var id=req.body.id;
         var propertyType = req.body.propertyType;
@@ -315,7 +342,24 @@ router.post('/editProperty', async function(req, res) {
     
         //}
         //res.status(200).json(result);
-        res.sendStatus(200);
+        // res.sendStatus(200);
+            
+        var newHistory = new History({
+            donebyUserId: donebyUserId,    
+            donebyUserName: donebyUserName,
+            dateOperation:  date.getTime(),
+            donebyUserrole : donebyUserrole,
+            operation: "Updating Property",
+        
+        });
+                        
+      
+                    
+        newHistory.save().then(()=> {
+            console.log("Added");
+            res.sendStatus(200);
+
+        });
     } catch (error){
       res.status(500).json(error);
     }
@@ -384,63 +428,181 @@ router.get('/ownersandbuilders', async function(req, res) {
     }
 }); 
 
-
-router.post('/addOwnerOrBuilder', async function(req, res) {
-    // console.log(req.body.locality)
-    // console.log(req.body.cost)
-    // console.log(req.body.facing)
-    const date = new Date();
+router.get('/history', async function(req, res) {
     try {
-
-        let result1 = await OwnerOrBuilder.find({contactNumber: req.body.contactNumber});
-        let result2 = await OwnerOrBuilder.find({secondNumber: req.body. secondNumber});
-        // console.log(result1.length);
-        console.log(result2.length);
-
-        if(result1.length == 0 && result2.length == 0) {
-
-            var newOwnerOrBuilder = new OwnerOrBuilder({
-                contactNumber: req.body.contactNumber,    
-                secondNumber: req.body.secondNumber,
-                ownerOrBuilder: req.body.ownerOrBuilder,
-                name: req.body.name,
-                address: req.body.address,
-                ownerStatus:"Public",
-                ownerAddDate:date.getTime()
-            });
-                        
-        //newTest2.save();
-                       
-        newOwnerOrBuilder.save().then(()=> {
-            //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
-            console.log("saved");
-            console.log(newOwnerOrBuilder._id);
-            res.send(newOwnerOrBuilder._id);
-            //res.sendStatus(200);
-        }).catch((err)=> {
-            //res.render('show_message.pug', {message: "Database error", type: "error"});
-            res.sendStatus(401);
-        }
-    );
-        }
-        else if(result1.length > 0 && result2.length > 0) {
-            res.send("both_exists");
-        }
-        else if(result1.length > 0) {
-            res.send("firstnumber_exists");
-        }
-        else if(result2.length > 0) {
-            res.send("secondnumber_exists");
-        }
-
-    
-        //}
-        // res.status(200).json(result);
+        let result = await History.find()
+        res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);
     }
+}); 
+router.post('/addOwnerOrBuilder', async function(req, res) {
+    const {
+        donebyUserId,
+        donebyUserName,
+        donebyUserrole,
+        contactNumber,
+        ownerOrBuilder,
+        name,
+        address
+    } = req.body;
+
+    const secondNumber = req.body.secondNumber?.trim();
+    const date = new Date();
+
+    try {
+        const result1 = await OwnerOrBuilder.find({ contactNumber });
+        let result2 = null;
+
+        if (secondNumber) {
+            result2 = await OwnerOrBuilder.findOne({ secondNumber });
+        }
+
+        if (result1.length === 0 && !result2) {
+            const newOwnerOrBuilder = new OwnerOrBuilder({
+                contactNumber,
+                secondNumber,
+                ownerOrBuilder,
+                name,
+                address,
+                ownerStatus: "Public",
+                ownerAddDate: date.getTime()
+            });
+
+            await newOwnerOrBuilder.save();
+   
+            var newHistory = new History({
+                        donebyUserId: donebyUserId,    
+                        donebyUserName: donebyUserName,
+                        dateOperation:  date.getTime(),
+                        donebyUserrole : donebyUserrole,
+                        operation: "Adding Owner",
+                    
+            });
+                                    
+                    //newTest2.save();
+                                
+            newHistory.save().then(()=> {
+                        
+            
+            
+            console.log("saved");
+            console.log(newOwnerOrBuilder._id);
+            res.send(newOwnerOrBuilder._id);
+            // res.sendStatus(200);
+                        // res.sendStatus(200);
+            });
+         
+       
+            
+
+        } else if (result1.length > 0 && result2) {
+            res.send("both_exists");
+        } else if (result1.length > 0) {
+            res.send("firstnumber_exists");
+        } else if (result2) {
+            res.send("secondnumber_exists");
+        }
+
+    } catch (error) {
+        console.error("Catch error:", error);
+        res.status(500).json(error);
+    }
+});
 
 
+// router.post('/addOwnerOrBuilder', async function(req, res) {
+//     // console.log(req.body.donebyUserId)
+//     // console.log(req.body.donebyUserName)
+//     // console.log(req.body.donebyUserrole)
+//     var donebyUserId=req.body.donebyUserId;
+//     var donebyUserName=req.body.donebyUserName;
+//     var donebyUserrole=req.body.donebyUserrole;
+//     const date = new Date();
+//     try {
+//         let result1 = await OwnerOrBuilder.find({contactNumber: req.body.contactNumber});
+//         //console.log(result1.length);
+//         let result2 = null;
+//         if (req.body.secondNumber && req.body.secondNumber.trim() !== "") {
+//             result2 = await OwnerOrBuilder.findOne({ secondNumber: secondNumber.trim() });
+//         }
+     
+        
+//         // result2 = await OwnerOrBuilder.find({secondNumber: req.body. secondNumber});
+//         // console.log(result1.length);
+//         console.log(result2.length);
+
+//         if(result1.length == 0 && result2.length == 0) {
+
+//             var newOwnerOrBuilder = new OwnerOrBuilder({
+//                 contactNumber: req.body.contactNumber,    
+//                 secondNumber: req.body.secondNumber,
+//                 ownerOrBuilder: req.body.ownerOrBuilder,
+//                 name: req.body.name,
+//                 address: req.body.address,
+//                 ownerStatus:"Public",
+//                 ownerAddDate:date.getTime()
+//             });
+                        
+//             //newTest2.save();
+                       
+//             newOwnerOrBuilder.save().then(()=> {
+//                 //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+//                 console.log("saved");
+//                 console.log(newOwnerOrBuilder._id);
+//                 res.send(newOwnerOrBuilder._id);
+            
+                
+//                 //res.sendStatus(200);
+//             }).catch((err)=> {
+//                 console.error("Save error:", err);
+//                 //res.render('show_message.pug', {message: "Database error", type: "error"});
+//                 res.sendStatus(401);
+//             });
+//         }
+//         else if(result1.length > 0 && result2.length > 0) {
+//             res.send("both_exists");
+//         }
+//         else if(result1.length > 0) {
+//             res.send("firstnumber_exists");
+//         }
+//         else if(result2.length > 0) {
+//             res.send("secondnumber_exists");
+//         }
+
+    
+//         //}
+//         // res.status(200).json(result);
+//     } catch (error){
+//       res.status(500).json(error);
+//     }
+
+
+
+
+    // try {
+    //     var newHistory = new History({
+    //         donebyUserId: donebyUserId,    
+    //         donebyUserName: donebyUserName,
+    //         dateOperation:  date.getTime(),
+    //         donebyUserrole : donebyUserrole,
+    //         operation: "Adding Owner",
+        
+    //     });
+                        
+    //     //newTest2.save();
+                    
+    //     newHistory.save().then(()=> {
+            
+
+
+    //         console.log("saved")
+    //         res.sendStatus(200);
+    //     });
+    // }
+    // catch (error){
+    //     res.status(500).json(error);
+    //   }
 
     // try {
     //     // if(req.body.propertyType=="Villa")
@@ -471,7 +633,7 @@ router.post('/addOwnerOrBuilder', async function(req, res) {
     // } catch (error){
     //   res.status(500).json(error);
     // }
-}); 
+// }); 
 
 router.get('/individualOwnerOrBuilder/:id', async function(req, res) {
     try {
@@ -499,15 +661,37 @@ router.post('/editOwnerOrBuilder', async function(req, res) {
         var id = req.body.id;
         var name = req.body.name;
         var address=req.body.address;
+        var donebyUserId=req.body.donebyUserId;
+        var donebyUserName=req.body.donebyUserName;
+        var donebyUserrole=req.body.donebyUserrole;
         // var ownerStatus=req.body.ownerStatus
         // console.log(propertyID)  
         // console.log(propertyType) 
      
         let result = await OwnerOrBuilder.findByIdAndUpdate(req.body.id, {name: req.body.name, address:req.body.address,ownerAddDate: date.getTime()
-
+        
         })
+
+
+
+        var newHistory = new History({
+            donebyUserId: donebyUserId,    
+            donebyUserName: donebyUserName,
+            dateOperation:  date.getTime(),
+            donebyUserrole : donebyUserrole,
+            operation: "Updating Owner",
+        
+        });
+                        
       
-        res.sendStatus(200);
+                    
+        newHistory.save().then(()=> {
+            console.log("updated");
+            res.sendStatus(200);
+
+        });
+      
+       
     } catch (error){
       res.status(500).json(error);
     }
@@ -632,7 +816,9 @@ router.get('/deleteOwnerOrBuilder/:id', async function(req, res){
         //newTest2.save();
                        
         newPropertyCustomerRequestForOwner.save().then(()=> {
-            //res.render('show_message.pug', {message: "New person added", type: "success", person: req.body});
+            
+            
+
             console.log("saved")
             res.sendStatus(200);
         }).catch((err)=> {
