@@ -8,12 +8,15 @@ var session = require('express-session');
 var app = express();
 
 mongoose.connect('mongodb://localhost/my_db');
+const nodemailer = require('nodemailer');
+const otpGenerator = require('otp-generator');
 //mongoose.connect('mongodb://paulsin:paulpp644@localhost/my_db');
 
 const cors = require('cors');
 
 const url = 'http://localhost:5173';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
+const otpStore = {};
 
 
 var router = express.Router();
@@ -279,6 +282,58 @@ router.get('/person/delete/:id', async function(req, res){
         res.status(500).json(error);
     }
  });
+
+ router.post('/send-otp', async (req, res) => {
+    const { email } = req.body;
+    console.log(email)
+    const otp = Math.floor(1000 + Math.random() * 9000).toString(); 
+  
+    // Save OTP with 10-minute expiration
+    otpStore[email] = { otp, expiresAt: Date.now() + 10 * 60 * 1000 };
+  
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: "anjup7818@gmail.com", // replace with your email
+        pass: 'ojgv ihsl sqlj bxmx', // or use app password
+      },
+    });
+  
+    const mailOptions = {
+      from: 'anjup7818@gmail.com',
+      to: email,
+      subject: 'Your OTP Code',
+      text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
+    };
+  
+    try {
+      await transporter.sendMail(mailOptions);
+      res.send('OTP sent');
+    } catch (err) {
+      res.send('Error sending email');
+    }
+  });
+
+  router.post('/verify-otp', (req, res) => {
+    const { email, otp } = req.body;
+    console.log(otp)
+    const record = otpStore[email];
+    if (!record) return res.send('No OTP sent');
+  
+    const { otp: storedOtp, expiresAt } = record;
+  
+    if (Date.now() > expiresAt) {
+      delete otpStore[email];
+      return res.send('OTP expired');
+    }
+  
+    if (otp === storedOtp) {
+      delete otpStore[email];
+      return res.send('OTP verified');
+    } else {
+      return res.send('Invalid OTP');
+    }
+  });
 
 router.post('/person', async function(req, res){
     var personInfo = req.body; //Get the parsed information
