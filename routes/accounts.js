@@ -14,7 +14,12 @@ const otpGenerator = require('otp-generator');
 
 const cors = require('cors');
 
-const url = 'http://localhost:5173';  // Localhost
+// const url = 'http://localhost:5173';  // Localhost
+const allowedOrigins = [
+    'http://localhost:5173',          
+    'https://agentfreedeal.com',
+    'http://localhost:3001'
+  ];
 //const url = 'https://haberoceanstock.com/';  // Localhost
 const otpStore = {};
 
@@ -27,12 +32,21 @@ router.use(bodyParser.json());
 // for parsing application/xwww-
 router.use(bodyParser.urlencoded({ extended: true })); 
 //form-urlencoded
-
-
 router.use(cors({
-    origin: url, // Replace with your React app's origin
-    credentials: true // Allow credentials to be sent
-}));
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  }));
+
+// router.use(cors({
+//     origin: url, // Replace with your React app's origin
+//     credentials: true // Allow credentials to be sent
+// }));
 
 router.use(cookieParser());
 router.use(session({

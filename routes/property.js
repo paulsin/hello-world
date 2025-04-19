@@ -31,7 +31,7 @@ const authToken = "3dc2e975e24d6c2b1afb2bd8b944e5ec";
 const client = twilio(accountSid, authToken);
 
 
-const url = 'http://localhost:5173';  // Localhost
+const url = 'http://192.168.20.2:3000';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
 
 const fs = require('fs');
