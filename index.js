@@ -12,6 +12,7 @@ app.use(fileUpload());
 var accounts = require('./routes/accounts.js');
 var location = require('./routes/location.js');
 var property = require('./routes/property.js');
+var agentdiary=require('./routes/agentdiary.js')
 
 var globalVariables = require('./routes/globalVariables');
 
@@ -23,6 +24,7 @@ var globalVariables = require('./routes/globalVariables');
 
 var PropertyImages=require('./models/propertyimages');
 var Property = require('./models/property');
+var Agentdiary=require('./models/agentdiary')
 
 /*
 var propertyImagesSchema = mongoose.Schema({
@@ -51,6 +53,7 @@ app.use('/backend/assets', express.static(assetFolder));
 app.use('/backend/accounts', accounts);
 app.use('/backend/location', location);
 app.use('/backend/property', property);
+app.use('/backend/agentdiary', agentdiary)
 
 app.post('/backend/addPropertyImages', async function(req, res) {
 
