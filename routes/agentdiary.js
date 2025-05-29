@@ -64,7 +64,7 @@ const Agentdiary = require('../models/agentdiary');
 router.get('/agentdiaries', async function(req, res) {
     try {
         console.log("hiiiii")
-        let result = await Agentdiary.find();
+        let result = await Agentdiary.find().sort({dateOperation : -1});;
         res.status(200).json(result);
     } catch (error){
       res.status(500).json(error);
@@ -86,7 +86,8 @@ router.post('/addAgentdiary', async function(req, res) {
                 name: req.body.name,    
                 phone: req.body.phone,
                 range:req.body.range,
-                preferedLocation: req.body.preferedLocation
+                preferedLocation: req.body.preferedLocation,
+                dateOperation:  date.getTime()
         
             });
                         

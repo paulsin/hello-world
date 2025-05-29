@@ -30,8 +30,12 @@ const accountSid = "AC7e3fc92aff97de2cf1b9d5c65c0872a8";
 const authToken = "3dc2e975e24d6c2b1afb2bd8b944e5ec";
 const client = twilio(accountSid, authToken);
 
-
-const url = 'http://192.168.20.2:3000';  // Localhost
+const allowedOrigins = [
+    'http://localhost:5173',          
+    'https://agentfreedeal.com',
+    'http://localhost:3001'
+  ];
+// const url = 'http://192.168.20.2:3000';  // Localhost
 //const url = 'https://haberoceanstock.com/';  // Localhost
 
 const fs = require('fs');
@@ -50,11 +54,20 @@ router.use(bodyParser.urlencoded({ extended: true }));
 //console.log(__dirname);
 //router.use('/cssFiles', express.static(__dirname + '/assets'));
 
+// router.use(cors({
+//     origin: url, // Replace with your React app's origin
+//     credentials: true // Allow credentials to be sent
+// }));
 router.use(cors({
-    origin: url, // Replace with your React app's origin
-    credentials: true // Allow credentials to be sent
-}));
-
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  }));
 
 const Property = require('../models/property');
 const OwnerOrBuilder = require('../models/ownerOrBuilder');

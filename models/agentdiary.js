@@ -5,6 +5,7 @@ var agentdiarySchema = mongoose.Schema({
     phone: String,          
     range : String,
     preferedLocation : String,
+    dateOperation : Number
 
     
  });
