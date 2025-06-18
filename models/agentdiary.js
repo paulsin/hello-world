@@ -3,7 +3,7 @@ const mongoose=require('mongoose');
 var agentdiarySchema = mongoose.Schema({
     name: String,
     phone: String,          
-    range : String,
+    range : [String],
     preferedLocation : String,
     dateOperation : Number
 

@@ -48,7 +48,7 @@ var propertySchema = mongoose.Schema({
     savedBy : String
 });
 
-const propertyModel=mongoose.model("property", propertySchema)
+const propertyModel=mongoose.model("property", propertySchema);
 
 module.exports = propertyModel
 
