@@ -5,7 +5,10 @@ var agentdiarySchema = mongoose.Schema({
     phone: String,          
     range : [String],
     preferedLocation : String,
-    dateOperation : Number
+    dateOperation : Number,
+    stateID: [String],
+    districtID: [String],
+    townID: [String]
 
     
  });
