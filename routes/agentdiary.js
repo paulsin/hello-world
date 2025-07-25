@@ -87,7 +87,10 @@ router.post('/addAgentdiary', async function(req, res) {
                 phone: req.body.phone,
                 range:req.body.range,
                 preferedLocation: req.body.preferedLocation,
-                dateOperation:  date.getTime()
+                dateOperation:  date.getTime(),
+                stateID:req.body.stateID,
+                districtID:req.body.districtID,
+                townID:req.body.townID
         
             });
                         
@@ -113,5 +116,38 @@ router.post('/addAgentdiary', async function(req, res) {
       res.status(500).json(error);
     }
 }); 
+router.post('/editAgentdiary', async function(req, res) {
+
+  const date = new Date();
+  try {
+      
+      let result = await Agentdiary.findByIdAndUpdate(req.body.id, {name: req.body.name,  phone:req.body.phone,range:req.body.range,
+        preferedLocation: req.body.preferedLocation,
+        dateOperation:  date.getTime(),
+        stateID:req.body.stateID,
+        districtID:req.body.districtID,
+        townID:req.body.townID
+        
+      })
+      // let result1= await Property.findByIdAndUpdate(req.body.propertyID,{stateID:req.body.stateID})
+      // ,{transactionType:req.body.transactionType},{stateID:req.body.stateID},{districtID:req.body.districtID},{townID:req.body.townID});
+  
+      //}
+      //res.status(200).json(result);
+      res.sendStatus(200);
+  } catch (error){
+    res.status(500).json(error);
+  }
+}); 
+
+router.get('/deleteAgentdiary/:id', async function(req, res){
+  try {
+      const query = { _id: req.params.id };
+      let result = await Agentdiary.deleteOne(query);
+      res.send(result);
+  } catch(error) {
+      res.status(500).json(error);
+  }
+});
 module.exports = router;
 
