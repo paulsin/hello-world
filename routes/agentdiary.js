@@ -156,7 +156,7 @@ router.delete('/deleteAgentdiary/:id', async function(req, res) {
       let result = await Agentdiary.deleteOne(query);
 
       if (result.deletedCount > 0) {
-          res.json({ success: true, message: 'Deleted successfully' });
+          res.status(200).json({ success: true, message: "Deleted successfully." });
       } else {
           res.status(404).json({ success: false, message: 'Item not found' });
       }
